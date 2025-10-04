@@ -1,0 +1,169 @@
+/* === Base Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background-color: #f9f9f9;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* === Accent Color === */
+:root {
+  --accent: #4caf50;
+  --accent-dark: #388e3c;
+  --text-muted: #666;
+  --bg-light: #ffffff;
+  --bg-dark: #f0f0f0;
+}
+
+/* === Header === */
+header {
+  background-color: var(--bg-light);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  color: var(--accent);
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+/* === Buttons === */
+button,
+.btn {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover,
+.btn:hover {
+  background-color: var(--accent-dark);
+}
+
+/* === Forms === */
+form {
+  background-color: var(--bg-light);
+  padding: 2rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* === Video Grid === */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.video-card {
+  background-color: var(--bg-light);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.video-card:hover {
+  transform: scale(1.02);
+}
+
+.video-card iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+}
+
+.video-card .info {
+  padding: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* === Page Titles === */
+h1, h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+/* === Footer === */
+footer {
+  background-color: var(--bg-light);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-top: 1px solid #eee;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    margin-top: 1rem;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+}
