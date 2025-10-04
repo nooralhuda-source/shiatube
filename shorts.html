@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShiaTube • Shorts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER / NAV -->
+  <header>
+    <h1>ShiaTube</h1>
+    <nav>
+      <a class="nav-link" href="home.html">Home</a>
+      <a class="nav-link active" href="shorts.html">Shorts</a>
+      <a class="nav-link" href="latmiyas.html">Latmiyas</a>
+      <a class="nav-link" href="long-form.html">Long-Form</a>
+      <a class="nav-link" href="upload.html">Upload</a>
+    </nav>
+    <div id="user-nav">
+      <button id="signin-btn" class="btn">Sign In</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <section id="shorts">
+      <h2>Shorts</h2>
+      <div id="videoGrid" class="video-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Noor Al Huda — ShiaTube
+  </footer>
+
+  <script>
+    // 1) Init Supabase
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL'
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+    // 2) Update Sign-In / Sign-Out Nav
+    async function updateNav() {
+      const user = supabase.auth.user()
+      const nav = document.getElementById('user-nav')
+      if (user) {
+        nav.innerHTML = `
+          <span>${user.email}</span>
+          <button class="btn" onclick="supabase.auth.signOut().then(updateNav)">
+            Sign Out
+          </button>
+        `
+      } else {
+        nav.innerHTML = `
+          <button class="btn" onclick="location.href='auth.html'">
+            Sign In
+          </button>
+        `
+      }
+    }
+    supabase.auth.onAuthStateChange(updateNav)
+    updateNav()
+
+    // 3) Load Shorts Videos
+    async function loadShorts() {
+      const { data: videos, error } = await supabase
+        .from('videos')
+        .select('*')
+        .eq('category', 'Shorts')
+        .order('inserted_at', { ascending: false })
+
+      if (error) {
+        console.error(error)
+        return
+      }
+
+      const grid = document.getElementById('videoGrid')
+      grid.innerHTML = ''
+
+      videos.forEach(v => {
+        const card = document.createElement('div')
+        card.className = 'video-card'
+        card.innerHTML = `
+          <iframe
+            src="https://www.youtube.com/embed/${v.youtube_id}"
+            allowfullscreen>
+          </iframe>
+          <div class="info">${v.title}</div>
+        `
+        card.onclick = () => {
+          location.href = `watch.html?id=${v.id}`
+        }
+        grid.appendChild(card)
+      })
+    }
+
+    // 4) Kick off
+    loadShorts()
+  </script>
+
+</body>
+</html>
