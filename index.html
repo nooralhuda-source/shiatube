@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShiaTube.nooralhuda.co.uk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>ShiaTube</h1>
+    <nav>
+      <a class="nav-link" href="#home">Home</a>
+      <a class="nav-link" href="#home?cat=Shorts">Shorts</a>
+      <a class="nav-link" href="#home?cat=Latmiyas">Latmiyas</a>
+      <a class="nav-link" href="#home?cat=Long-Form">Long-Form</a>
+      <a class="nav-link" href="#upload">Upload</a>
+    </nav>
+    <div id="user-nav">
+      <button id="signin-btn" class="btn">Sign In</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME FEED -->
+    <section id="home" class="section">
+      <h2 id="home-title">All Videos</h2>
+      <div id="videoGrid" class="video-grid"></div>
+    </section>
+
+    <!-- UPLOAD -->
+    <section id="upload" class="section">
+      <h2>Upload a Video</h2>
+      <form id="uploadForm">
+        <label>Title</label>
+        <input type="text" id="uploadTitle" required />
+        <label>YouTube ID</label>
+        <input type="text" id="uploadId" placeholder="e.g. dQw4w9WgXcQ" required />
+        <label>Category</label>
+        <select id="uploadCat">
+          <option>Shorts</option>
+          <option>Latmiyas</option>
+          <option>Long-Form</option>
+        </select>
+        <label>Description</label>
+        <textarea id="uploadDesc" rows="3"></textarea>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+    </section>
+
+    <!-- AUTH -->
+    <section id="auth" class="section">
+      <h2>Sign In / Sign Up</h2>
+      <form id="authForm">
+        <label>Email</label>
+        <input type="email" id="authEmail" required />
+        <label>Password</label>
+        <input type="password" id="authPass" required />
+        <button class="btn" type="submit">Go</button>
+      </form>
+    </section>
+
+    <!-- WATCH VIDEO -->
+    <section id="watch" class="section">
+      <button id="backHome" class="btn">&larr; Back</button>
+      <div id="watchContent"></div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Noor Al Huda — ShiaTube
+  </footer>
+
+  <script>
+  // ————————————————
+  // 1) INIT SUPABASE
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ————————————————
+  // 2) SIMPLE ROUTER
+  const sections = { home: 'home', upload: 'upload', auth: 'auth', watch: 'watch' };
+  function show(sec) {
+    Object.values(sections).forEach(id => {
+      document.getElementById(id).style.display = id === sec ? 'block' : 'none';
+    });
+  }
+  async function router() {
+    const [route, query] = location.hash.slice(1).split('?');
+    if (!route || route === 'home') {
+      show('home');
+      loadVideos(new URLSearchParams(query).get('cat'));
+    }
+    else if (route === 'upload') show('upload');
+    else if (route === 'auth') show('auth');
+    else if (route === 'watch') await renderWatch();
+  }
+  window.addEventListener('hashchange', router);
+  router();
+
+  // ————————————————
+  // 3) AUTH HANDLERS
+  document.getElementById('authForm').onsubmit = async e => {
+    e.preventDefault();
+    const email = authEmail.value, pass = authPass.value;
+    let { user, error } = await supabase.auth.signIn({ email, password: pass });
+    if (error) ({ user, error } = await supabase.auth.signUp({ email, password: pass }));
+    if (error) return alert(error.message);
+    alert('Signed in!');
+    updateNav();
+    location.hash = '#home';
+  };
+  async function updateNav() {
+    const user = supabase.auth.user();
+    const nav = document.getElementById('user-nav');
+    if (user) {
+      nav.innerHTML = `<span>${user.email}</span>
+        <button class="btn" onclick="supabase.auth.signOut().then(()=>updateNav())">Sign Out</button>`;
+    } else {
+      nav.innerHTML = `<button id="signin-btn" class="btn" onclick="location.hash='#auth'">Sign In</button>`;
+    }
+  }
+  supabase.auth.onAuthStateChange(updateNav);
+  updateNav();
+
+  // ————————————————
+  // 4) LOAD & FILTER VIDEOS
+  async function loadVideos(cat) {
+    const title = cat || 'All Videos';
+    homeTitle.textContent = title;
+    let q = supabase.from('videos').select('*').order('inserted_at', { ascending: false });
+    if (cat) q = q.eq('category', cat);
+    const { data, error } = await q;
+    if (error) return console.error(error);
+    videoGrid.innerHTML = '';
+    data.forEach(v => {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <iframe src="https://www.youtube.com/embed/${v.youtube_id}" allowfullscreen></iframe>
+        <div class="info">${v.title}</div>
+      `;
+      card.onclick = () => location.hash = `#watch?id=${v.id}`;
+      videoGrid.append(card);
+    });
+  }
+
+  // ————————————————
+  // 5) UPLOAD FORM
+  uploadForm.onsubmit = async e => {
+    e.preventDefault();
+    if (!supabase.auth.user()) return alert('Sign in first');
+    const { error } = await supabase.from('videos').insert([{
+      title: uploadTitle.value,
+      youtube_id: uploadId.value,
+      category: uploadCat.value,
+      description: uploadDesc.value
+    }]);
+    if (error) return alert(error.message);
+    alert('Uploaded!');
+    location.hash = '#home';
+  };
+
+  // ————————————————
+  // 6) WATCH PAGE
+  async function renderWatch() {
+    show('watch');
+    const id = new URLSearchParams(location.hash.split('?')[1]).get('id');
+    const { data: v, error } = await supabase.from('videos').select('*').eq('id', id).single();
+    if (error || !v) return location.hash = '#home';
+    watchContent.innerHTML = `
+      <iframe src="https://www.youtube.com/embed/${v.youtube_id}" allowfullscreen></iframe>
+      <h2>${v.title}</h2>
+      <p>${v.description || ''}</p>
+    `;
+  }
+  backHome.onclick = () => location.hash = '#home';
+  </script>
+
+</body>
+</html>
