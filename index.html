@@ -104,6 +104,19 @@
       font-weight:600;
     }
 
+    .form-section {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+    }
+.form-section h2 {
+  color: #f5fafe;
+  margin-bottom: 12px;
+}
+
+
     /* simple page footer */
     footer { color:var(--muted); font-size:13px; margin-top:18px; text-align:center; }
   </style>
@@ -182,8 +195,12 @@
 
       return card;
     }
+  <div class="form-section">
+  <h2>Upload a Song</h2>
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc2AnLGTCdG0zE2gNUzBRpz35M5nyoutVLidrtiNqYjrzbNvg/viewform?embedded=true" width="640" height="760" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
 
-    fetch("https://tube.nooralhuda.co.uk/songList.json")
+    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQuzCniv0UGOGw2SiVePODBbdmPaf7qtsbDRYixaKpFHLT0tdhd7U7XMVhkkHS9TRf7B_YEkDrjeEKa/pubhtml")
       .then(res => {
         if(!res.ok) throw new Error('Network response was not ok');
         return res.json();
