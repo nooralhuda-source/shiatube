@@ -1,133 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ShiaTube – Voice of Resistance</title>
+  <title>Shiatube – Latest Uploads</title>
   <style>
     body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: #0c0c0c;
-      color: #f5f5f5;
-      text-align: center;
-    }
-    header {
-      background: linear-gradient(90deg, #4b0f0f, #1f0202);
-      padding: 1rem;
-      color: #f9d342;
-      font-size: 1.5rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    main {
+      font-family: sans-serif;
       max-width: 700px;
       margin: 2rem auto;
       padding: 1rem;
-    }
-    h2 {
-      color: #f9d342;
-    }
-    .upload-box {
-      background: #1a1a1a;
-      border: 2px dashed #555;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-top: 2rem;
-    }
-    .upload-box label {
-      background: #4b0f0f;
-      color: #f9d342;
-      padding: 0.8rem 1.5rem;
+      background: #f0f0f0;
       border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
     }
-    .upload-box label:hover {
-      background: #710000;
+    h1 {
+      text-align: center;
+      color: #333;
     }
-    input[type="file"] {
-      display: none;
-    }
-    .audio-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    .audio-item {
-      background: #161616;
-      border-radius: 10px;
+    .track {
+      margin-bottom: 2rem;
+      background: #fff;
       padding: 1rem;
-      box-shadow: 0 0 8px #300000;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
-    audio {
+    audio, iframe {
       width: 100%;
-      outline: none;
-      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <header>ShiaTube – Voice of Resistance</header>
-
-  <main>
-    <h2>Latest Uploaded Audios</h2>
-    <div class="audio-list" id="audioList"></div>
-
-    <div class="upload-box">
-      <h2>Upload Your Audio</h2>
-      <label for="audioInput">Select Audio File</label>
-      <input type="file" id="audioInput" accept="audio/*">
-      <p id="status" style="margin-top: 1rem; color: #999;"></p>
-    </div>
-  </main>
+  <h1>Latest Uploads</h1>
+  <div id="audioContainer">Loading...</div>
 
   <script>
-    const uploadInput = document.getElementById("audioInput");
-    const audioList = document.getElementById("audioList");
-    const status = document.getElementById("status");
+    const container = document.getElementById('audioContainer');
 
-    // Load saved audios from localStorage (temporary)
-    const saved = JSON.parse(localStorage.getItem("audios") || "[]");
-    saved.forEach(addAudioToPage);
+    fetch("https://tube.nooralhuda.co.uk/songList.json") // 🔁 Replace with your actual JSON URL
+      .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then(data => {
+        container.innerHTML = '';
+        data.forEach(track => {
+          const div = document.createElement('div');
+          div.className = 'track';
+          let player = '';
 
-    uploadInput.addEventListener("change", async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+          if (track.type === 'mp3') {
+            player = `<audio controls src="${track.url}"></audio>`;
+          } else if (track.type === 'youtube') {
+            const videoId = track.url.split("v=")[1]?.split("&")[0];
+            if (videoId) {
+              player = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+              player = `<p>❌ Invalid YouTube link</p>`;
+            }
+          }
 
-      status.textContent = "Uploading... please wait.";
-
-      const form = new FormData();
-      form.append("audio", file);
-
-      try {
-        const res = await fetch("/api/upload", { method: "POST", body: form });
-        const data = await res.json();
-
-        if (data.url) {
-          addAudioToPage(data);
-          saved.push(data);
-          localStorage.setItem("audios", JSON.stringify(saved));
-          status.textContent = "✅ Uploaded successfully!";
-        } else {
-          status.textContent = "❌ Upload failed: " + (data.error || "Unknown error");
-        }
-      } catch (err) {
+          div.innerHTML = `<h3>${track.title}</h3>${player}`;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        container.innerHTML = '❌ Failed to load song list.';
         console.error(err);
-        status.textContent = "⚠️ Upload failed. Check your connection.";
-      }
-    });
-
-    function addAudioToPage(audio) {
-      const div = document.createElement("div");
-      div.className = "audio-item";
-      div.innerHTML = `
-        <p><strong>${audio.name || "Audio File"}</strong></p>
-        <audio controls src="${audio.url}"></audio>
-      `;
-      audioList.prepend(div);
-    }
+      });
   </script>
 </body>
 </html>
