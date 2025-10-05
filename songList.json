@@ -1,8 +1,22 @@
 [
-
-  {
-    "title": "wrath of Allah",
-    "type": "youtube",
-    "url": "https://www.youtube.com/watch?v=sduS4UMqRCE"
-  }
+  { "title": "Haider E Karrar", "type": "youtube", "url": "https://www.youtube.com/watch?v=-8zry_qG8Tg" },
+  { "title": "Badshah Hussain", "type": "youtube", "url": "https://www.youtube.com/watch?v=Lpaw89TfgNY" },
+  { "title": "Mawlana Mera Maula Ali", "type": "youtube", "url": "https://www.youtube.com/watch?v=NsYAbCqM9EI" },
+  { "title": "Mawlaya (Arabic) - Maher Zain", "type": "youtube", "url": "https://www.youtube.com/watch?v=CY2eP_Hceq4" },
+  { "title": "Aya Man Yadda'i Al-Fahm - Mishary Rashid Alafasy", "type": "youtube", "url": "https://www.youtube.com/watch?v=E1E8c72kuus" },
+  { "title": "Rahman Ya Rahman - Mishary Rashid Alafasy", "type": "youtube", "url": "https://www.youtube.com/watch?v=1KviEqtohqQ" },
+  { "title": "Salam Farmandeh - Abozar Rouhi (official)", "type": "youtube", "url": "https://www.youtube.com/watch?v=ZNdUu6EqT7E" },
+  { "title": "Salam Farmandeh 2 Anthem - Abuzar Rouhi", "type": "youtube", "url": "https://www.youtube.com/watch?v=5loVCtQnE4E" },
+  { "title": "Goosh Be Farman - Abuzar Rouhi", "type": "youtube", "url": "https://www.youtube.com/watch?v=N215LhEKjRQ" },
+  { "title": "Ali Ali Mawla (Arabic/English/Farsi/Urdu versions)", "type": "youtube", "url": "https://www.youtube.com/watch?v=mwCQg3QQWXU" },
+  { "title": "Abbas Ka Nara - Nadeem Sarwar", "type": "youtube", "url": "https://www.youtube.com/watch?v=ILnTBiJauCc" },
+  { "title": "Haider Haider - Haj Mahmoud Karimi (Farsi Noha)", "type": "youtube", "url": "https://www.youtube.com/watch?v=NjWT9Fc1Ejw" },
+  { "title": "مشي مشي أحبابك - Haidar Al-Baiyati (example recent recitation)", "type": "youtube", "url": "https://www.youtube.com/watch?v=103YE3N6REE" },
+  { "title": "لطميات المشاية 1447 هـ (collection example)", "type": "youtube", "url": "https://www.youtube.com/watch?v=103YE3N6REE" },
+  { "title": "Huwa Haydar - Abuzar Roohi", "type": "youtube", "url": "https://www.youtube.com/watch?v=duTXe1HxqQ4" },
+  { "title": "Iliya - Ali Ghelich (audio/visualizer)", "type": "youtube", "url": "https://www.youtube.com/watch?v=15AcAPe28xg" },
+  { "title": "Mawlaya (alternate Maher Zain upload)", "type": "youtube", "url": "https://www.youtube.com/watch?v=BrqvlM3geac" },
+  { "title": "Aya Man Yadda'i Al-Fahm (alt upload)", "type": "youtube", "url": "https://www.youtube.com/watch?v=F_0KSG4jhE4" },
+  { "title": "Haider E Karrar (alt official upload)", "type": "youtube", "url": "https://www.youtube.com/watch?v=-g-Q0Z8lcwY" },
+  { "title": "Additional general reference item (use to replace with exact track links you prefer)", "type": "youtube", "url": "https://www.youtube.com/" }
 ]
