@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShiaTube – Voice of Resistance</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0a0a0a;
+      color: #f4f4f4;
+      margin: 0;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(90deg, #4b0f0f, #1f0202);
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #f9d342;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    main {
+      margin: 2rem auto;
+      width: 90%;
+      max-width: 700px;
+    }
+    h2 {
+      margin-top: 2rem;
+      color: #f9d342;
+    }
+    .audio-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .audio-item {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+    audio {
+      width: 100%;
+    }
+    .upload-box {
+      background: #1f1f1f;
+      border: 2px dashed #555;
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .upload-box input[type="file"] {
+      display: none;
+    }
+    .upload-label {
+      background: #4b0f0f;
+      color: #f9d342;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+      transition: 0.3s;
+    }
+    .upload-label:hover {
+      background: #730000;
+    }
+  </style>
+</head>
+<body>
+  <header>ShiaTube – Voice of Resistance</header>
+
+  <main>
+    <section>
+      <h2>Latest Audios</h2>
+      <div class="audio-list" id="audioList"></div>
+    </section>
+
+    <section class="upload-box">
+      <h2>Upload Your Audio</h2>
+      <label for="audioUpload" class="upload-label">Choose Audio File</label>
+      <input type="file" id="audioUpload" accept="audio/*" />
+    </section>
+  </main>
+
+  <script>
+    const audioList = document.getElementById("audioList");
+    const audioUpload = document.getElementById("audioUpload");
+
+    // Load audios from JSON
+    async function loadAudios() {
+      const res = await fetch("/api/audios.json");
+      const audios = await res.json();
+      audioList.innerHTML = "";
+      audios.reverse().forEach(audio => {
+        const div = document.createElement("div");
+        div.classList.add("audio-item");
+        div.innerHTML = `
+          <p><strong>${audio.name}</strong></p>
+          <audio controls src="${audio.url}"></audio>
+        `;
+        audioList.appendChild(div);
+      });
+    }
+
+    // Upload file
+    audioUpload.addEventListener("change", async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("audio", file);
+      await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      await loadAudios();
+    });
+
+    loadAudios();
+  </script>
+</body>
+</html>
