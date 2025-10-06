@@ -200,7 +200,7 @@
   <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc2AnLGTCdG0zE2gNUzBRpz35M5nyoutVLidrtiNqYjrzbNvg/viewform?embedded=true" width="640" height="760" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
   </div>
 
-    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQuzCniv0UGOGw2SiVePODBbdmPaf7qtsbDRYixaKpFHLT0tdhd7U7XMVhkkHS9TRf7B_YEkDrjeEKa/pubhtml")
+    fetch("https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1")
       .then(res => {
         if(!res.ok) throw new Error('Network response was not ok');
         return res.json();
@@ -212,10 +212,17 @@
           return;
         }
         data.forEach(track => {
-          const card = createTrackCard(track);
-          container.appendChild(card);
-        });
-      })
+        const formatted = {
+          title: track["Title"],
+          type: track["Type"],
+          url: track["URL"]
+        };
+        const card = createTrackCard(formatted);
+        container.appendChild(card);
+      });
+
+
+    })
       .catch(err => {
         container.innerHTML = '<div style="grid-column:1/-1;color:#ff8a8a;padding:20px">❌ Failed to load song list.</div>';
         console.error(err);
