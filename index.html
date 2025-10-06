@@ -49,11 +49,32 @@
     nav a:hover {
       color: var(--accent);
     }
+
+    /* playlist dropdown */
+    #playlistFilter {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--card);
+      color: #e6eef6;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(450px,3fr));
       gap: 16px;
     }
+    /* wrap cards in links */
+    .grid a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
     .track {
       background: var(--card);
       border-radius: var(--radius);
@@ -109,6 +130,10 @@
       </nav>
     </header>
 
+    <select id="playlistFilter">
+      <option value="">All Playlists</option>
+    </select>
+
     <div id="audioContainer" class="grid">
       Loading…
     </div>
@@ -117,40 +142,67 @@
   <footer>© Noor Al Huda</footer>
 
   <script>
+    // ask for user name once
+    let userName = localStorage.getItem('shiatuUser');
+    if (!userName) {
+      userName = prompt("Welcome to Shiatube! What's your name?") || 'Guest';
+      localStorage.setItem('shiatuUser', userName);
+    }
+
     const SHEET_URL = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
     const STORAGE_KEY = "listenCounts";
 
     // read/write listen counts
-    function getListenCounts(){
+    function getListenCounts() {
       try {
         return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
       } catch {
         return {};
       }
     }
-    function saveListenCounts(counts){
+    function saveListenCounts(counts) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(counts));
     }
 
     // record a play
-    function recordListen(track){
+    function recordListen(track) {
       const counts = getListenCounts();
       counts[track.url] = (counts[track.url] || 0) + 1;
       saveListenCounts(counts);
     }
 
     // shuffle helper
-    function shuffle(arr){
+    function shuffle(arr) {
       const a = arr.slice();
-      for(let i=a.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i],a[j]] = [a[j],a[i]];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
       }
       return a;
     }
 
+    // extract YouTube ID
+    function extractId(url) {
+      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/);
+      return m ? m[1] : '';
+    }
+
+    // render cards with optional playlist filter
+    function renderTracks(list, filter = '') {
+      const container = document.getElementById("audioContainer");
+      container.innerHTML = '';
+      list
+        .filter(t => !filter || t.playlist === filter)
+        .forEach(track => {
+          const link = document.createElement('a');
+          link.href = `video.html?id=${encodeURIComponent(extractId(track.url))}`;
+          link.appendChild(createTrackCard(track));
+          container.appendChild(link);
+        });
+    }
+
     // build a card
-    function createTrackCard(track){
+    function createTrackCard(track) {
       const card = document.createElement("div");
       card.className = "track";
 
@@ -158,19 +210,16 @@
       playerWrap.className = "player";
       let playerEl;
 
-      if(track.type === "mp3"){
+      if (track.type === "mp3") {
         playerEl = document.createElement("audio");
         playerEl.controls = true;
         playerEl.src = track.url;
-      }
-      else {
-        const vidMatch = track.url.match(/[?&]v=([^&]+)/)
-                       || track.url.match(/youtu\.be\/([^?&]+)/);
-        const id = vidMatch ? vidMatch[1] : null;
-        if(id){
+      } else {
+        const id = extractId(track.url);
+        if (id) {
           playerEl = document.createElement("iframe");
           playerEl.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
-          playerEl.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+          playerEl.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
           playerEl.allowFullscreen = true;
         } else {
           playerEl = document.createElement("div");
@@ -191,15 +240,10 @@
 
       meta.appendChild(title);
       meta.appendChild(small);
-
       card.appendChild(playerWrap);
       card.appendChild(meta);
 
-      // on click → record listen
-      card.addEventListener("click",()=>{
-        recordListen(track);
-      });
-
+      card.addEventListener("click", () => recordListen(track));
       return card;
     }
 
@@ -207,28 +251,31 @@
     fetch(SHEET_URL)
       .then(r => r.json())
       .then(rows => {
-        const tracks = rows.map(r=>({
-          title: r["Title"] || "Untitled",
-          type: (r["Type"]||"youtube").toLowerCase(),
-          url: r["URL"] || ""
+        const tracks = rows.map(r => ({
+          title:    r["Title"]    || "Untitled",
+          type:     (r["Type"]||"youtube").toLowerCase(),
+          url:      r["URL"]      || "",
+          playlist: r["Playlist"] || "Uncategorized"
         }));
 
+        // build playlist dropdown
+        const sel = document.getElementById('playlistFilter');
+        Array.from(new Set(tracks.map(t => t.playlist)))
+          .forEach(pl => {
+            const opt = document.createElement('option');
+            opt.value = pl;
+            opt.textContent = pl;
+            sel.appendChild(opt);
+          });
+        sel.addEventListener('change', () => renderTracks(tracks, sel.value));
+
+        // initial order: most-played or random
         const counts = getListenCounts();
-        let toShow;
+        const initial = Object.keys(counts).length
+          ? tracks.sort((a,b)=>(counts[b.url]||0)-(counts[a.url]||0))
+          : shuffle(tracks);
 
-        if(Object.keys(counts).length){
-          // sort by descending play count
-          toShow = tracks.sort((a,b)=>(counts[b.url]||0)-(counts[a.url]||0));
-        } else {
-          // first‐visit: randomize
-          toShow = shuffle(tracks);
-        }
-
-        const container = document.getElementById("audioContainer");
-        container.innerHTML = "";
-        toShow.forEach(t=>{
-          container.appendChild(createTrackCard(t));
-        });
+        renderTracks(initial);
       })
       .catch(err => {
         document.getElementById("audioContainer").textContent = "❌ Failed to load playlist.";

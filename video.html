@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Shiatube – Watch</title>
+  <style>
+    :root {
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #9aa4b2;
+      --accent: #ff4e4e;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: #e6eef6;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
+
+    .site {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    nav a {
+      color: #e6eef6;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    #player {
+      background: #000;
+      width: 100%;
+      height: 450px;
+      margin-bottom: 1.5rem;
+    }
+
+    #player iframe,
+    #player audio {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      margin: 0;
+      color: #f5fafe;
+    }
+
+    .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .comments {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .comments h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      color: #f5fafe;
+    }
+
+    .comment {
+      background: #1a202e;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .comment strong {
+      color: var(--accent);
+    }
+
+    #commentInput {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      border: none;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      resize: vertical;
+      background: #0b1220;
+      color: #e6eef6;
+    }
+
+    #postComment {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    #postComment:hover {
+      opacity: 0.9;
+    }
+
+    .related {
+      margin-bottom: 2rem;
+    }
+
+    .related h2 {
+      font-size: 1.1rem;
+      color: #f5fafe;
+      margin-bottom: 1rem;
+    }
+
+    .related-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .related-list a {
+      display: block;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      text-decoration: none;
+      color: #e6eef6;
+      font-size: 0.9rem;
+    }
+
+    .related-list a:hover {
+      background: #1a202e;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header>
+      <div class="logo">Shiatube</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="upload.html">Upload</a>
+      </nav>
+    </header>
+
+    <h1 id="vidTitle">Loading…</h1>
+    <div class="meta" id="vidPlaylist"></div>
+
+    <div id="player"></div>
+
+    <div class="comments">
+      <h2>Comments</h2>
+      <div id="commentsList"></div>
+      <textarea id="commentInput" rows="3" placeholder="Write a comment…"></textarea>
+      <button id="postComment">Post as <span id="postName"></span></button>
+    </div>
+
+    <div class="related">
+      <h2>Related</h2>
+      <div class="related-list" id="relatedList"></div>
+    </div>
+
+    <footer>© Noor Al Huda</footer>
+  </div>
+
+  <script>
+    // ask for user name if not set
+    let userName = localStorage.getItem('shiatuUser');
+    if (!userName) {
+      userName = prompt("What's your name?") || 'Guest';
+      localStorage.setItem('shiatuUser', userName);
+    }
+    document.getElementById('postName').textContent = userName;
+
+    // get video ID from URL
+    const params = new URLSearchParams(location.search);
+    const vidId = params.get('id');
+
+    // helper to extract YouTube ID
+    function extractId(url) {
+      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/);
+      return m ? m[1] : null;
+    }
+
+    // fetch and render
+    fetch("https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1")
+      .then(r => r.json())
+      .then(rows => {
+        const tracks = rows.map(r => ({
+          title: r["Title"] || 'Untitled',
+          type: (r["Type"] || 'youtube').toLowerCase(),
+          url: r["URL"] || '',
+          id: extractId(r["URL"]),
+          playlist: r["Playlist"] || 'Uncategorized'
+        }));
+
+        const current = tracks.find(t => t.id === vidId);
+        if (!current) throw new Error("Video not found");
+
+        // title & playlist
+        document.getElementById('vidTitle').textContent = current.title;
+        document.getElementById('vidPlaylist').textContent = `Playlist: ${current.playlist}`;
+
+        // player
+        const playerEl = document.getElementById('player');
+        if (current.type === 'mp3') {
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          audio.src = current.url;
+          playerEl.appendChild(audio);
+        } else {
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1`;
+          playerEl.appendChild(iframe);
+        }
+
+        // comments
+        const key = `comments_${vidId}`;
+        const saved = JSON.parse(localStorage.getItem(key) || '[]');
+        const listDiv = document.getElementById('commentsList');
+        saved.forEach(c => {
+          const d = document.createElement('div');
+          d.className = 'comment';
+          d.innerHTML = `<strong>${c.user}</strong> <em>(${new Date(c.time).toLocaleString()})</em><br>${c.text}`;
+          listDiv.appendChild(d);
+        });
+
+        document.getElementById('postComment').onclick = () => {
+          const text = document.getElementById('commentInput').value.trim();
+          if (!text) return;
+          const comment = { user: userName, text, time: Date.now() };
+          saved.push(comment);
+          localStorage.setItem(key, JSON.stringify(saved));
+          const d = document.createElement('div');
+          d.className = 'comment';
+          d.innerHTML = `<strong>${comment.user}</strong> <em>(${new Date(comment.time).toLocaleString()})</em><br>${comment.text}`;
+          listDiv.appendChild(d);
+          document.getElementById('commentInput').value = '';
+        };
+
+        // related
+        const relatedDiv = document.getElementById('relatedList');
+        tracks
+          .filter(t => t.playlist === current.playlist && t.id !== vidId)
+          .forEach(t => {
+            const a = document.createElement('a');
+            a.href = `video.html?id=${t.id}`;
+            a.textContent = t.title;
+            relatedDiv.appendChild(a);
+          });
+      })
+      .catch(err => {
+        document.querySelector('.site').innerHTML = `<p style="color: #ff4e4e;">❌ ${err.message}</p>`;
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
