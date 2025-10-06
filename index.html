@@ -5,103 +5,59 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shiatube – Latest Uploads</title>
   <style>
-    :root{
-      --bg:#0f1724;         /* dark site background like modern video sites */
-      --card:#0b1220;       /* card background */
-      --muted:#9aa4b2;      /* muted text */
-      --accent:#ff4e4e;     /* small accent */
-      --card-radius:10px;
+    :root {
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #9aa4b2;
+      --accent: #ff4e4e;
+      --card-radius: 10px;
     }
 
-    html,body{height:100%;margin:0;padding:0;background:var(--bg);color:#e6eef6;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: #e6eef6;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
     .site {
-      max-width:1200px;
-      margin:28px auto;
-      padding:20px;
+      max-width: 1200px;
+      margin: 28px auto;
+      padding: 20px;
     }
 
-    header{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      margin-bottom:18px;
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
     }
+
     .logo {
-      width:56px;
-      height:56px;
-      border-radius:8px;
-      background:linear-gradient(135deg,#1e293b,#0b1220);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      color:var(--accent);
-      font-size:20px;
-      box-shadow:0 6px 18px rgba(2,6,23,0.6);
-    }
-    h1{font-size:20px;margin:0;}
-    .sub { color:var(--muted); font-size:13px; margin-top:4px; }
-
-    /* Grid: 4 columns on large, 3 on medium, 2 on small, 1 on very small */
-    .grid {
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:16px;
-      align-items:start;
-    }
-    @media (max-width:1500px){ .grid{ grid-template-columns: repeat(3,1fr); } }
-    @media (max-width:900px){ .grid{ grid-template-columns: repeat(2,1fr); } }
-    @media (max-width:600px){ .grid{ grid-template-columns: 1fr; } }
-
-    .track {
-      background:var(--card);
-      border-radius:var(--card-radius);
-      overflow:hidden;
-      box-shadow:0 8px 24px rgba(2,6,23,0.6);
-      display:flex;
-      flex-direction:column;
-      height:100%;
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1e293b, #0b1220);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 20px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
     }
 
-    /* Player container: preserve width but increase height (taller players) */
-    .player {
-      width:100%;
-      height:270px;               /* larger height than default */
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    @media (max-width:1300px){ .player{ height:260px; } }
-    @media (max-width:600px){ .player{ height:200px; } }
-
-    .meta {
-      padding:12px 14px;
-    }
-    .title {
-      font-size:15px;
-      margin:0 0 6px 0;
-      color:#f5fafe;
-      line-height:1.2;
-      overflow:hidden;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-    }
-    .meta .small { color:var(--muted); font-size:13px; }
-
-    /* make embedded iframe fill the player area */
-    .player iframe, .player video, .player audio{
-      width:140%;
-      height:100%;
-      border:0;
-      display:block;
+    h1 {
+      font-size: 20px;
+      margin: 0;
     }
 
-    /* fallback / invalid link note */
-    .invalid {
-      color:var(--accent);
-      font-weight:600;
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
     }
 
     .form-section {
@@ -111,14 +67,108 @@
       margin-bottom: 30px;
       box-shadow: 0 8px 24px rgba(2,6,23,0.6);
     }
-.form-section h2 {
-  color: #f5fafe;
-  margin-bottom: 12px;
-}
 
+    .form-section h2 {
+      color: #f5fafe;
+      margin-bottom: 12px;
+    }
 
-    /* simple page footer */
-    footer { color:var(--muted); font-size:13px; margin-top:18px; text-align:center; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width:1500px) {
+      .grid {
+        grid-template-columns: repeat(3,1fr);
+      }
+    }
+
+    @media (max-width:900px) {
+      .grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+    }
+
+    @media (max-width:600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .track {
+      background: var(--card);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .player {
+      width: 100%;
+      height: 270px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width:1300px) {
+      .player {
+        height: 260px;
+      }
+    }
+
+    @media (max-width:600px) {
+      .player {
+        height: 200px;
+      }
+    }
+
+    .player iframe,
+    .player video,
+    .player audio {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .meta {
+      padding: 12px 14px;
+    }
+
+    .title {
+      font-size: 15px;
+      margin: 0 0 6px 0;
+      color: #f5fafe;
+      line-height: 1.2;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .meta .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .invalid {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 18px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -132,16 +182,22 @@
     </header>
 
     <main>
+      <div class="form-section">
+        <h2>Upload a Song</h2>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc2AnLGTCdG0zE2gNUzBRpz35M5nyoutVLidrtiNqYjrzbNvg/viewform?embedded=true"
+                width="100%" height="760" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      </div>
+
       <div id="audioContainer" class="grid">Loading...</div>
     </main>
 
-    <footer>Powered by Shiatube</footer>
+    <footer>Powered by Noor Al Huda</footer>
   </div>
 
   <script>
     const container = document.getElementById('audioContainer');
 
-    function createTrackCard(track){
+    function createTrackCard(track) {
       const card = document.createElement('div');
       card.className = 'track';
 
@@ -149,43 +205,44 @@
       playerWrap.className = 'player';
 
       let playerEl;
-      if(track.type === 'mp3'){
+      if (track.type === 'mp3') {
         playerEl = document.createElement('audio');
         playerEl.controls = true;
         playerEl.src = track.url;
-      } else if(track.type === 'youtube'){
+      } else if (track.type === 'youtube') {
         const url = track.url || '';
-        // robust extraction: try standard v=, youtu.be, embed, or full url
-        const ytMatch = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/\/embed\/([^?&]+)/);
+        const ytMatch = url.match(/[?&]v=([^&]+)/)
+                     || url.match(/youtu\.be\/([^?&]+)/)
+                     || url.match(/\/embed\/([^?&]+)/);
         const videoId = ytMatch ? ytMatch[1] : null;
-        if(videoId){
+        if (videoId) {
           playerEl = document.createElement('iframe');
           playerEl.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
           playerEl.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
           playerEl.allowFullscreen = true;
         } else {
-          const p = document.createElement('div');
-          p.className = 'invalid';
-          p.textContent = 'Invalid YouTube link';
-          playerEl = p;
+          playerEl = document.createElement('div');
+          playerEl.className = 'invalid';
+          playerEl.textContent = 'Invalid YouTube link';
         }
       } else {
-        const p = document.createElement('div');
-        p.className = 'invalid';
-        p.textContent = 'Unknown media type';
-        playerEl = p;
+        playerEl = document.createElement('div');
+        playerEl.className = 'invalid';
+        playerEl.textContent = 'Unknown media type';
       }
 
       playerWrap.appendChild(playerEl);
 
       const meta = document.createElement('div');
       meta.className = 'meta';
+
       const title = document.createElement('h3');
       title.className = 'title';
       title.textContent = track.title || 'Untitled';
+
       const small = document.createElement('div');
       small.className = 'small';
-      small.textContent = track.artist ? track.artist : (track.type === 'youtube' ? 'YouTube' : 'MP3');
+      small.textContent = track.type === 'youtube' ? 'YouTube' : 'MP3';
 
       meta.appendChild(title);
       meta.appendChild(small);
@@ -195,34 +252,28 @@
 
       return card;
     }
-  <div class="form-section">
-  <h2>Upload a Song</h2>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc2AnLGTCdG0zE2gNUzBRpz35M5nyoutVLidrtiNqYjrzbNvg/viewform?embedded=true" width="640" height="760" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-  </div>
 
     fetch("https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1")
       .then(res => {
-        if(!res.ok) throw new Error('Network response was not ok');
+        if (!res.ok) throw new Error('Network response was not ok');
         return res.json();
       })
       .then(data => {
         container.innerHTML = '';
-        if(!Array.isArray(data) || data.length === 0){
-          container.innerHTML = '<div style="grid-column:1/-1;color:#9aa4b2;padding:20px">No tracks found in songList.json</div>';
+        if (!Array.isArray(data) || data.length === 0) {
+          container.innerHTML = '<div style="grid-column:1/-1;color:#9aa4b2;padding:20px">No tracks found</div>';
           return;
         }
         data.forEach(track => {
-        const formatted = {
-          title: track["Title"],
-          type: track["Type"],
-          url: track["URL"]
-        };
-        const card = createTrackCard(formatted);
-        container.appendChild(card);
-      });
-
-
-    })
+          const formatted = {
+            title: track["Title"],
+            type: track["Type"].toLowerCase(),
+            url: track["URL"]
+          };
+          const card = createTrackCard(formatted);
+          container.appendChild(card);
+        });
+      })
       .catch(err => {
         container.innerHTML = '<div style="grid-column:1/-1;color:#ff8a8a;padding:20px">❌ Failed to load song list.</div>';
         console.error(err);
