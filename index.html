@@ -11,128 +11,253 @@
       --muted: #9aa4b2;
       --accent: #ff4e4e;
       --radius: 10px;
+      --text: #e6eef6;
+    }
+    [data-theme="light"] {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --muted: #5b6b78;
+      --accent: #ff4e4e;
+      --text: #0b1220;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
       background: var(--bg);
-      color: #e6eef6;
+      color: var(--text);
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
+
+    /* SITE CONTAINER */
     .site {
       flex: 1;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 16px;
     }
+
+    /* HEADER - sticky like apps */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .logo {
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: var(--accent);
-    }
-    nav a {
-      color: #e6eef6;
-      text-decoration: none;
-      margin-left: 16px;
-      font-size: 0.9rem;
-    }
-    nav a:hover {
-      color: var(--accent);
+      gap: 12px;
+      margin-bottom: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), transparent);
+      padding: 10px 0;
     }
 
-    /* playlist dropdown */
+    .left {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .logo .brand {
+      background:linear-gradient(135deg,#1e293b,#0b1220);
+      width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+      font-weight:700;color:var(--accent);
+      box-shadow:0 6px 18px rgba(2,6,23,0.4);
+    }
+
+    nav {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    nav a, .header-btn {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding:8px 10px;
+      border-radius:8px;
+    }
+
+    nav a:hover, .header-btn:hover { background: rgba(255,255,255,0.03); color: var(--accent); }
+
+    /* small back button */
+    .back-btn {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:600;
+    }
+
+    /* hamburger for mobile */
+    .hamburger {
+      display: none;
+      width:40px;height:40px;border-radius:8px;border:none;background:transparent;color:var(--text);
+      font-size:22px;cursor:pointer;
+    }
+
+    /* theme toggle */
+    .theme-toggle {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 8px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* PLAYLIST SELECT */
+    .controls {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
     #playlistFilter {
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       padding: 8px;
-      margin-bottom: 16px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       border-radius: var(--radius);
       border: none;
       background: var(--card);
-      color: #e6eef6;
+      color: var(--text);
     }
 
+    /* GRID */
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(450px,3fr));
+      grid-template-columns: repeat(3, minmax(300px,1fr));
       gap: 16px;
     }
-    /* wrap cards in links */
-    .grid a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
+
+    /* responsive layout like Youtube app on phones */
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, minmax(220px,1fr)); }
+      .site { padding: 12px; }
+      header { padding: 8px 0; }
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; gap: 12px; }
+      .hamburger { display:block; }
+      nav.desktop-only { display:none; }
     }
 
+    /* CARD */
     .track {
       background: var(--card);
       border-radius: var(--radius);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      cursor: pointer;
+      position: relative;
+      min-height: 260px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
     }
+
+    /* video preview area */
     .player {
       position: relative;
-      width: 100%;
-      height: 240px;
+      width:100%;
+      padding-top: 56.25%; /* 16:9 */
       background: #000;
     }
-    .player iframe,
-    .player audio {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
+    .player iframe, .player audio {
+      position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;
     }
+
+    /* overlay anchor so entire card is clickable without nesting issues */
+    .card-link {
+      position:absolute; inset:0; z-index:20; text-decoration:none; color:inherit;
+    }
+
     .meta {
       padding: 12px;
+      z-index: 10;
     }
     .title {
       margin: 0 0 8px;
       font-size: 1rem;
       line-height: 1.2;
-      color: #f5fafe;
+      color: var(--text);
       overflow: hidden;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
-    .small {
-      font-size: 0.8rem;
-      color: var(--muted);
+    .small { font-size: 0.8rem; color: var(--muted); }
+
+    /* text overlay at top-right to show listen count or badge */
+    .badge {
+      position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); padding:6px 8px;border-radius:8px; font-size:0.85rem;
     }
-    footer {
-      text-align: center;
-      padding: 12px 0;
-      font-size: 0.8rem;
-      color: var(--muted);
+
+    footer { text-align: center; padding: 12px 0; font-size: 0.8rem; color: var(--muted); }
+
+    /* mobile slide-out menu */
+    .mobile-menu {
+      position: fixed; top:0; left: -260px; width: 260px; height: 100%; background: var(--card);
+      box-shadow: 6px 0 20px rgba(0,0,0,0.5); transition: left .22s ease; padding: 16px; z-index:120;
     }
+    .mobile-menu.open { left: 0; }
+    .mobile-menu a { display:block; padding:10px 8px; color:var(--text); text-decoration:none; border-radius:6px; }
+    .mobile-menu a:hover { background: rgba(255,255,255,0.03); color: var(--accent); }
+
   </style>
 </head>
-<body>
+<body data-theme="dark">
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <a href="index.html">Home</a>
+    <a href="upload.html">Upload</a>
+    <a id="backNoor" href="#">Back to NoorAlHuda</a>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:8px 0;">
+    <div style="color:var(--muted);font-size:0.9rem;padding-top:8px">Theme</div>
+    <button id="mobileTheme" class="header-btn" style="margin-top:8px">Toggle theme</button>
+  </div>
+
   <div class="site">
     <header>
-      <div class="logo">Shiatube</div>
-      <nav>
+      <div class="left">
+        <button id="hamb" class="hamburger" aria-label="Open menu">☰</button>
+        <div class="logo">
+          <div class="brand">ST</div>
+          <div style="line-height:1;">
+            <div style="font-weight:700">Shiatube</div>
+            <div style="font-size:0.8rem;color:var(--muted);margin-top:2px">Latest uploads</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="desktop-only">
+        <a class="back-btn" id="backToNoor" href="#" title="Back to Noor Al Huda">← NoorAlHuda</a>
         <a href="upload.html">Upload</a>
+        <button id="themeToggle" class="theme-toggle" title="Toggle theme">Toggle theme</button>
       </nav>
     </header>
 
-    <select id="playlistFilter">
-      <option value="">All Playlists</option>
-    </select>
+    <div class="controls">
+      <select id="playlistFilter">
+        <option value="">All Playlists</option>
+      </select>
+    </div>
 
     <div id="audioContainer" class="grid">
       Loading…
@@ -142,6 +267,34 @@
   <footer>© Noor Al Huda</footer>
 
   <script>
+    // preserve theme across visits
+    const body = document.body;
+    const savedTheme = localStorage.getItem('shiatu_theme') || 'dark';
+    body.setAttribute('data-theme', savedTheme);
+
+    function toggleTheme() {
+      const current = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', current);
+      localStorage.setItem('shiatu_theme', current);
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('mobileTheme').addEventListener('click', toggleTheme);
+
+    // mobile menu toggle
+    const hamb = document.getElementById('hamb');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamb.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      mobileMenu.setAttribute('aria-hidden', !mobileMenu.classList.contains('open'));
+    });
+
+    // Back to Noor Al Huda link (user requested)
+    // set to an example anchor; replace href value with the real destination URL if needed
+    const backNoor = document.getElementById('backNoor');
+    backNoor.href = 'https://nooralhuda.co.uk';
+    document.getElementById('backToNoor').href = backNoor.href;
+
     // ask for user name once
     let userName = localStorage.getItem('shiatuUser');
     if (!userName) {
@@ -152,13 +305,9 @@
     const SHEET_URL = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
     const STORAGE_KEY = "listenCounts";
 
-    // read/write listen counts
     function getListenCounts() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-      } catch {
-        return {};
-      }
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+      catch { return {}; }
     }
     function saveListenCounts(counts) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(counts));
@@ -171,7 +320,7 @@
       saveListenCounts(counts);
     }
 
-    // shuffle helper
+    // shuffle
     function shuffle(arr) {
       const a = arr.slice();
       for (let i = a.length - 1; i > 0; i--) {
@@ -181,73 +330,89 @@
       return a;
     }
 
-    // extract YouTube ID
+    // robust id extraction
     function extractId(url) {
-      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/);
+      if (!url) return '';
+      const m = url.match(/[?&]v=([^&]+)/)
+             || url.match(/youtu\.be\/([^?&]+)/)
+             || url.match(/\/embed\/([^?&]+)/)
+             || url.match(/\/v\/([^?&/]+)/);
       return m ? m[1] : '';
     }
 
-    // render cards with optional playlist filter
+    // create card: note overlay link covers the whole card so clicking anywhere navigates
+    function createTrackCard(track) {
+      const card = document.createElement('div');
+      card.className = 'track';
+
+      const playerWrap = document.createElement('div');
+      playerWrap.className = 'player';
+
+      if (track.type === 'mp3') {
+        const audio = document.createElement('audio');
+        audio.controls = true; audio.src = track.url;
+        playerWrap.appendChild(audio);
+      } else {
+        const id = extractId(track.url);
+        if (id) {
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          iframe.setAttribute('allowfullscreen', '');
+          playerWrap.appendChild(iframe);
+        } else {
+          const p = document.createElement('div');
+          p.className = 'small'; p.textContent = 'Invalid YouTube link';
+          playerWrap.appendChild(p);
+        }
+      }
+
+      // meta
+      const meta = document.createElement('div'); meta.className = 'meta';
+      const title = document.createElement('h3'); title.className='title'; title.textContent = track.title;
+      const small = document.createElement('div'); small.className = 'small'; small.textContent = track.type.toUpperCase();
+      meta.appendChild(title); meta.appendChild(small);
+
+      // badge showing listen count
+      const badge = document.createElement('div'); badge.className='badge';
+      const counts = getListenCounts();
+      badge.textContent = `${counts[track.url] || 0} plays`;
+
+      // overlay link
+      const link = document.createElement('a');
+      link.className = 'card-link';
+      const idFor = extractId(track.url);
+      link.href = `video.html?id=${encodeURIComponent(idFor)}`;
+
+      // wrap up
+      card.appendChild(playerWrap);
+      card.appendChild(meta);
+      card.appendChild(badge);
+      card.appendChild(link);
+
+      // record listen when user clicks the card area (only for homepage stats)
+      card.addEventListener('click', (e) => {
+        // don't double-count when user clicks the overlay link causing navigation
+        // this will run before navigation — it's fine to record once
+        recordListen(track);
+      }, { passive: true });
+
+      return card;
+    }
+
+    // renderTracks with playlist filter
     function renderTracks(list, filter = '') {
-      const container = document.getElementById("audioContainer");
+      const container = document.getElementById('audioContainer');
       container.innerHTML = '';
       list
         .filter(t => !filter || t.playlist === filter)
         .forEach(track => {
-          const link = document.createElement('a');
-          link.href = `video.html?id=${encodeURIComponent(extractId(track.url))}`;
-          link.appendChild(createTrackCard(track));
-          container.appendChild(link);
+          const card = createTrackCard(track);
+          container.appendChild(card);
         });
     }
 
-    // build a card
-    function createTrackCard(track) {
-      const card = document.createElement("div");
-      card.className = "track";
-
-      const playerWrap = document.createElement("div");
-      playerWrap.className = "player";
-      let playerEl;
-
-      if (track.type === "mp3") {
-        playerEl = document.createElement("audio");
-        playerEl.controls = true;
-        playerEl.src = track.url;
-      } else {
-        const id = extractId(track.url);
-        if (id) {
-          playerEl = document.createElement("iframe");
-          playerEl.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
-          playerEl.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-          playerEl.allowFullscreen = true;
-        } else {
-          playerEl = document.createElement("div");
-          playerEl.className = "small";
-          playerEl.textContent = "Invalid YouTube link";
-        }
-      }
-      playerWrap.appendChild(playerEl);
-
-      const meta = document.createElement("div");
-      meta.className = "meta";
-      const title = document.createElement("h3");
-      title.className = "title";
-      title.textContent = track.title;
-      const small = document.createElement("div");
-      small.className = "small";
-      small.textContent = track.type.toUpperCase();
-
-      meta.appendChild(title);
-      meta.appendChild(small);
-      card.appendChild(playerWrap);
-      card.appendChild(meta);
-
-      card.addEventListener("click", () => recordListen(track));
-      return card;
-    }
-
-    // load & render
+    // fetch data and initialize
     fetch(SHEET_URL)
       .then(r => r.json())
       .then(rows => {
@@ -267,7 +432,13 @@
             opt.textContent = pl;
             sel.appendChild(opt);
           });
-        sel.addEventListener('change', () => renderTracks(tracks, sel.value));
+        sel.addEventListener('change', () => {
+          const counts = getListenCounts();
+          const initial = Object.keys(counts).length
+            ? tracks.sort((a,b)=>(counts[b.url]||0)-(counts[a.url]||0))
+            : shuffle(tracks);
+          renderTracks(initial, sel.value);
+        });
 
         // initial order: most-played or random
         const counts = getListenCounts();
@@ -276,11 +447,28 @@
           : shuffle(tracks);
 
         renderTracks(initial);
+
       })
       .catch(err => {
         document.getElementById("audioContainer").textContent = "❌ Failed to load playlist.";
         console.error(err);
       });
+
+    // close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !hamb.contains(e.target)) {
+        mobileMenu.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // keyboard escape closes mobile menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        mobileMenu.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden','true');
+      }
+    });
   </script>
 </body>
 </html>
