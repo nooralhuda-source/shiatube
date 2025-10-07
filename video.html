@@ -13,7 +13,6 @@
       --radius: 8px;
     }
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       padding: 0;
@@ -21,151 +20,162 @@
       color: #e6eef6;
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     }
-
     .site {
-      max-width: 800px;
-      margin: 2rem auto;
+      max-width: 1000px;
+      margin: auto;
       padding: 1rem;
     }
-
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
-
     .logo {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--accent);
     }
-
     nav a {
       color: #e6eef6;
       text-decoration: none;
       margin-left: 1rem;
       font-size: 0.9rem;
     }
-
     nav a:hover {
       color: var(--accent);
     }
-
-    #player {
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 1rem;
+    }
+    @media (max-width: 800px) {
+      .content { grid-template-columns: 1fr; }
+    }
+    /* main player */
+    .player-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
       background: #000;
-      width: 100%;
-      height: 450px;
-      margin-bottom: 1.5rem;
+      border-radius: var(--radius);
+      overflow: hidden;
     }
-
-    #player iframe,
-    #player audio {
-      width: 100%;
-      height: 100%;
+    .player-wrap iframe,
+    .player-wrap audio {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       border: 0;
-      display: block;
     }
-
     h1 {
-      font-size: 1.25rem;
-      margin: 0;
-      color: #f5fafe;
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem;
     }
-
     .meta {
       font-size: 0.9rem;
       color: var(--muted);
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
-
+    /* comments */
     .comments {
       background: var(--card);
       border-radius: var(--radius);
       padding: 1rem;
-      margin-bottom: 2rem;
+      margin-top: 1rem;
     }
-
     .comments h2 {
       margin-top: 0;
-      margin-bottom: 1rem;
       font-size: 1.1rem;
       color: #f5fafe;
     }
-
     .comment {
-      background: #1a202e;
-      padding: 0.75rem;
-      border-radius: var(--radius);
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .comment .header {
+      font-size: 0.85rem;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .comment .text {
+      margin: 0.25rem 0 0.5rem;
       font-size: 0.9rem;
     }
-
-    .comment strong {
-      color: var(--accent);
+    .comment button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.8rem;
     }
-
-    #commentInput {
+    .replies {
+      margin-left: 1rem;
+      border-left: 2px solid #1a202e;
+      padding-left: 0.75rem;
+    }
+    textarea {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.5rem;
       border-radius: var(--radius);
       border: none;
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
-      resize: vertical;
       background: #0b1220;
       color: #e6eef6;
+      resize: vertical;
+      margin-bottom: 0.5rem;
     }
-
-    #postComment {
+    button.post {
       background: var(--accent);
       color: #fff;
       border: none;
-      padding: 0.6rem 1.2rem;
+      padding: 0.5rem 1rem;
       border-radius: var(--radius);
       cursor: pointer;
       font-size: 0.9rem;
     }
-
-    #postComment:hover {
-      opacity: 0.9;
-    }
-
-    .related {
-      margin-bottom: 2rem;
-    }
-
-    .related h2 {
-      font-size: 1.1rem;
-      color: #f5fafe;
-      margin-bottom: 1rem;
-    }
-
-    .related-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-
-    .related-list a {
-      display: block;
+    /* recommendations */
+    .recommendations {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 0.75rem;
-      text-decoration: none;
-      color: #e6eef6;
+      padding: 1rem;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+    .recommendations h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #f5fafe;
+    }
+    .rec-card {
+      margin-bottom: 1rem;
+    }
+    .rec-player {
+      width: 100%;
+      height: 120px;
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .rec-player iframe {
+      width: 100%; height: 100%; border: 0;
+    }
+    .rec-title {
+      margin: 0.5rem 0 0;
       font-size: 0.9rem;
+      color: #e6eef6;
+      text-decoration: none;
+      display: block;
     }
-
-    .related-list a:hover {
-      background: #1a202e;
+    .rec-title:hover {
+      color: var(--accent);
     }
-
     footer {
       text-align: center;
       font-size: 0.8rem;
       color: var(--muted);
-      margin-top: 2rem;
+      margin: 2rem 0 1rem;
     }
   </style>
 </head>
@@ -179,113 +189,171 @@
       </nav>
     </header>
 
-    <h1 id="vidTitle">Loading…</h1>
-    <div class="meta" id="vidPlaylist"></div>
+    <div class="content">
+      <div>
+        <h1 id="vidTitle">Loading…</h1>
+        <div class="meta" id="vidMeta"></div>
+        <div class="player-wrap" id="player"></div>
 
-    <div id="player"></div>
+        <div class="comments">
+          <h2>Comments</h2>
+          <div id="commentsList"></div>
+          <textarea id="commentInput" rows="3" placeholder="Write a comment…"></textarea>
+          <button class="post" id="postComment">Post as <span id="postName"></span></button>
+        </div>
+      </div>
 
-    <div class="comments">
-      <h2>Comments</h2>
-      <div id="commentsList"></div>
-      <textarea id="commentInput" rows="3" placeholder="Write a comment…"></textarea>
-      <button id="postComment">Post as <span id="postName"></span></button>
-    </div>
-
-    <div class="related">
-      <h2>Related</h2>
-      <div class="related-list" id="relatedList"></div>
+      <aside class="recommendations">
+        <h2>Recommended</h2>
+        <div id="relatedList"></div>
+      </aside>
     </div>
 
     <footer>© Noor Al Huda</footer>
   </div>
 
   <script>
-    // ask for user name if not set
-    let userName = localStorage.getItem('shiatuUser');
-    if (!userName) {
-      userName = prompt("What's your name?") || 'Guest';
-      localStorage.setItem('shiatuUser', userName);
+    // 1. User name
+    let user = localStorage.getItem('shiatuUser');
+    if (!user) {
+      user = prompt("What's your name?") || 'Guest';
+      localStorage.setItem('shiatuUser', user);
     }
-    document.getElementById('postName').textContent = userName;
+    document.getElementById('postName').textContent = user;
 
-    // get video ID from URL
-    const params = new URLSearchParams(location.search);
-    const vidId = params.get('id');
-
-    // helper to extract YouTube ID
+    // 2. Helpers
     function extractId(url) {
-      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/);
-      return m ? m[1] : null;
+      const m = url.match(/[?&]v=([^&]+)/)
+             || url.match(/youtu\.be\/([^?&]+)/)
+             || url.match(/\/embed\/([^?&]+)/);
+      return m ? m[1] : '';
+    }
+    function saveComments(key, arr) {
+      localStorage.setItem(key, JSON.stringify(arr));
+    }
+    function loadComments(key) {
+      return JSON.parse(localStorage.getItem(key) || '[]');
     }
 
-    // fetch and render
+    // 3. Get video ID
+    const vidId = new URLSearchParams(location.search).get('id');
+    const storageKey = `comments_${vidId}`;
+
+    // 4. Fetch all tracks
     fetch("https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1")
       .then(r => r.json())
       .then(rows => {
         const tracks = rows.map(r => ({
-          title: r["Title"] || 'Untitled',
-          type: (r["Type"] || 'youtube').toLowerCase(),
-          url: r["URL"] || '',
-          id: extractId(r["URL"]),
+          title:    r["Title"]    || 'Untitled',
+          type:     (r["Type"]||'youtube').toLowerCase(),
+          url:      r["URL"]      || '',
+          id:       extractId(r["URL"]),
           playlist: r["Playlist"] || 'Uncategorized'
         }));
 
+        // 5. Current track
         const current = tracks.find(t => t.id === vidId);
-        if (!current) throw new Error("Video not found");
+        if (!current) throw new Error('Video not found');
 
-        // title & playlist
         document.getElementById('vidTitle').textContent = current.title;
-        document.getElementById('vidPlaylist').textContent = `Playlist: ${current.playlist}`;
+        document.getElementById('vidMeta').textContent = `Playlist: ${current.playlist}`;
 
-        // player
-        const playerEl = document.getElementById('player');
+        // 6. Render main player
+        const player = document.getElementById('player');
         if (current.type === 'mp3') {
-          const audio = document.createElement('audio');
-          audio.controls = true;
-          audio.src = current.url;
-          playerEl.appendChild(audio);
+          const a = document.createElement('audio');
+          a.controls = true; a.src = current.url;
+          player.appendChild(a);
         } else {
           const iframe = document.createElement('iframe');
           iframe.src = `https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1`;
-          playerEl.appendChild(iframe);
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          iframe.setAttribute('allowfullscreen', '');
+          player.appendChild(iframe);
         }
 
-        // comments
-        const key = `comments_${vidId}`;
-        const saved = JSON.parse(localStorage.getItem(key) || '[]');
+        // 7. Render comments (nested)
         const listDiv = document.getElementById('commentsList');
-        saved.forEach(c => {
-          const d = document.createElement('div');
-          d.className = 'comment';
-          d.innerHTML = `<strong>${c.user}</strong> <em>(${new Date(c.time).toLocaleString()})</em><br>${c.text}`;
-          listDiv.appendChild(d);
-        });
+        let comments = loadComments(storageKey);
 
+        function renderComments(parentId, container) {
+          comments.filter(c => c.parentId === parentId)
+                  .forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'comment';
+            const header = document.createElement('div');
+            header.className = 'header';
+            header.innerHTML = `<span>${c.user}</span><span>${new Date(c.time).toLocaleString()}</span>`;
+            const text = document.createElement('div');
+            text.className = 'text';
+            text.textContent = c.text;
+            const btn = document.createElement('button');
+            btn.textContent = 'Reply';
+            btn.onclick = () => showReplyForm(c.id, div);
+            div.append(header, text, btn);
+
+            const replies = document.createElement('div');
+            replies.className = 'replies';
+            renderComments(c.id, replies);
+            div.appendChild(replies);
+
+            container.appendChild(div);
+          });
+        }
+
+        function showReplyForm(parentId, container) {
+          if (container.querySelector('textarea')) return;
+          const ta = document.createElement('textarea');
+          ta.rows = 2; ta.placeholder = 'Write a reply…';
+          const btn = document.createElement('button');
+          btn.className = 'post';
+          btn.textContent = 'Post Reply';
+          btn.onclick = () => {
+            const text = ta.value.trim(); if (!text) return;
+            comments.push({ id: Date.now(), parentId, user, text, time: Date.now() });
+            saveComments(storageKey, comments);
+            listDiv.innerHTML = '';
+            renderComments(null, listDiv);
+          };
+          container.append(ta, btn);
+        }
+
+        renderComments(null, listDiv);
+
+        // 8. New top‐level comment
         document.getElementById('postComment').onclick = () => {
-          const text = document.getElementById('commentInput').value.trim();
-          if (!text) return;
-          const comment = { user: userName, text, time: Date.now() };
-          saved.push(comment);
-          localStorage.setItem(key, JSON.stringify(saved));
-          const d = document.createElement('div');
-          d.className = 'comment';
-          d.innerHTML = `<strong>${comment.user}</strong> <em>(${new Date(comment.time).toLocaleString()})</em><br>${comment.text}`;
-          listDiv.appendChild(d);
-          document.getElementById('commentInput').value = '';
+          const ta = document.getElementById('commentInput');
+          const txt = ta.value.trim(); if (!txt) return;
+          comments.push({ id: Date.now(), parentId: null, user, text: txt, time: Date.now() });
+          saveComments(storageKey, comments);
+          ta.value = '';
+          listDiv.innerHTML = '';
+          renderComments(null, listDiv);
         };
 
-        // related
+        // 9. Related recommendations
         const relatedDiv = document.getElementById('relatedList');
-        tracks
-          .filter(t => t.playlist === current.playlist && t.id !== vidId)
-          .forEach(t => {
-            const a = document.createElement('a');
-            a.href = `video.html?id=${t.id}`;
-            a.textContent = t.title;
-            relatedDiv.appendChild(a);
-          });
+        tracks.filter(t => t.playlist === current.playlist && t.id !== vidId)
+              .forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'rec-card';
+          const wrap = document.createElement('div');
+          wrap.className = 'rec-player';
+          const ifr = document.createElement('iframe');
+          ifr.src = `https://www.youtube.com/embed/${t.id}?rel=0`;
+          wrap.appendChild(ifr);
+          const a = document.createElement('a');
+          a.className = 'rec-title';
+          a.href = `video.html?id=${t.id}`;
+          a.textContent = t.title;
+          card.append(wrap, a);
+          relatedDiv.appendChild(card);
+        });
       })
-
+      .catch(err => {
+        document.querySelector('.site').innerHTML = `<p style="color:#ff4e4e;">❌ ${err.message}</p>`;
+        console.error(err);
+      });
   </script>
 </body>
 </html>
