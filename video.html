@@ -11,201 +11,203 @@
       --muted: #9aa4b2;
       --accent: #ff4e4e;
       --radius: 8px;
+      --text: #e6eef6;
+    }
+    [data-theme="light"]{
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --muted: #55606a;
+      --accent: #ff4e4e;
+      --text: #0b1220;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
       background: var(--bg);
-      color: #e6eef6;
+      color: var(--text);
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
     .site {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: auto;
       padding: 1rem;
     }
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:1rem;
     }
-    .logo {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    nav a {
-      color: #e6eef6;
-      text-decoration: none;
-      margin-left: 1rem;
-      font-size: 0.9rem;
-    }
-    nav a:hover {
-      color: var(--accent);
-    }
+    .logo { font-size:1.25rem; font-weight:700; color:var(--accent); }
+    nav a { color:var(--text); text-decoration:none; margin-left:12px; }
+    nav a:hover { color:var(--accent); }
+
     .content {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      gap: 1rem;
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap: 16px;
     }
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
       .content { grid-template-columns: 1fr; }
     }
-    /* main player */
+
+    /* player area */
     .player-wrap {
-      position: relative;
-      width: 100%;
-      padding-top: 56.25%; /* 16:9 */
-      background: #000;
+      width:100%;
       border-radius: var(--radius);
-      overflow: hidden;
+      overflow:hidden;
+      background:#000;
+      position:relative;
     }
-    .player-wrap iframe,
-    .player-wrap audio {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      border: 0;
+    .player-inner {
+      width:100%;
+      height:56.25vw; /* 16:9 responsive */
+      max-height: 64vh;
+      background:#000;
     }
-    h1 {
-      font-size: 1.5rem;
-      margin: 0 0 0.5rem;
+    @media(min-width:900px){ .player-inner { height:56.25%; } }
+    .player-inner iframe, .player-inner audio { width:100%; height:100%; border:0; display:block; }
+
+    .title-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin:12px 0;
     }
-    .meta {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 1rem;
+    h1 { font-size:1.3rem; margin:0; color:var(--text); }
+    .meta { color:var(--muted); font-size:0. nine rem; margin-top:6px; }
+
+    /* actions */
+    .actions { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+    .btn {
+      background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06);
+      padding:8px 10px; border-radius:8px; cursor:pointer; font-size:0.95rem;
     }
+    .btn.primary { background:var(--accent); color:#fff; border:none; }
+    .stat { color:var(--muted); font-size:0.95rem; margin-left:8px; }
+
     /* comments */
     .comments {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 1rem;
-      margin-top: 1rem;
+      padding:1rem;
+      margin-top:1rem;
     }
-    .comments h2 {
-      margin-top: 0;
-      font-size: 1.1rem;
-      color: #f5fafe;
-    }
-    .comment {
-      margin-bottom: 1rem;
-    }
-    .comment .header {
-      font-size: 0.85rem;
-      color: var(--accent);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .comment .text {
-      margin: 0.25rem 0 0.5rem;
-      font-size: 0.9rem;
-    }
-    .comment button {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    .replies {
-      margin-left: 1rem;
-      border-left: 2px solid #1a202e;
-      padding-left: 0.75rem;
-    }
+    .comments h2 { margin-top:0; font-size:1.05rem; color:var(--text); }
+    .comment { margin-bottom:0.9rem; }
+    .comment .header { display:flex; justify-content:space-between; gap:8px; color:var(--accent); font-size:0.85rem; }
+    .comment .text { margin:6px 0 8px; color:var(--text); }
+    .comment .meta-small { color:var(--muted); font-size:0.82rem; }
+    .replies { margin-left:1rem; border-left:2px solid rgba(255,255,255,0.02); padding-left:0.75rem; margin-top:8px; }
+
     textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: var(--radius);
+      width:100%;
+      padding:0.6rem;
+      border-radius:8px;
       border: none;
-      background: #0b1220;
-      color: #e6eef6;
-      resize: vertical;
-      margin-bottom: 0.5rem;
+      background: var(--card);
+      color:var(--text);
+      resize:vertical;
+      margin-bottom:8px;
     }
-    button.post {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
+    button.post { background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+
     /* recommendations */
     .recommendations {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 1rem;
-      max-height: calc(100vh - 200px);
+      padding:1rem;
+      max-height: calc(80vh);
       overflow-y: auto;
     }
-    .recommendations h2 {
-      margin-top: 0;
-      font-size: 1.1rem;
-      color: #f5fafe;
+    .recommendations h2 { margin-top:0; color:var(--text); }
+    .rec-card { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; cursor:pointer; }
+    .rec-thumb {
+      width: 160px;
+      height: 90px;
+      background:#000;
+      border-radius:6px;
+      overflow:hidden;
+      flex:0 0 160px;
+      position:relative;
     }
-    .rec-card {
-      margin-bottom: 1rem;
+    .rec-thumb iframe { width:100%; height:100%; border:0; display:block; pointer-events:none; opacity:0.95; }
+    .rec-info { flex:1; }
+    .rec-title { color:var(--text); text-decoration:none; font-size:0.95rem; margin:0 0 6px; display:block; }
+    .rec-meta { color:var(--muted); font-size:0.85rem; }
+
+    /* clickable overlay for redirect on thumb */
+    .thumb-overlay { position:absolute; inset:0; z-index:3; background:transparent; }
+
+    /* responsive rec thumbnails */
+    @media(max-width:600px){
+      .rec-thumb { width: 46%; height:auto; padding-top:26%; flex:0 0 46%; }
+      .rec-card { flex-wrap:wrap; gap:8px; }
     }
-    .rec-player {
-      width: 100%;
-      height: 120px;
-      background: #000;
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .rec-player iframe {
-      width: 100%; height: 100%; border: 0;
-    }
-    .rec-title {
-      margin: 0.5rem 0 0;
-      font-size: 0.9rem;
-      color: #e6eef6;
-      text-decoration: none;
-      display: block;
-    }
-    .rec-title:hover {
-      color: var(--accent);
-    }
-    footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin: 2rem 0 1rem;
-    }
+
+    footer { text-align:center; margin-top:1.25rem; color:var(--muted); font-size:0.85rem; }
+
   </style>
 </head>
-<body>
+<body data-theme="dark">
   <div class="site">
     <header>
       <div class="logo">Shiatube</div>
       <nav>
         <a href="index.html">Home</a>
         <a href="upload.html">Upload</a>
+        <button id="themeToggle" class="btn" title="Toggle theme">Theme</button>
       </nav>
     </header>
 
     <div class="content">
-      <div>
-        <h1 id="vidTitle">Loading…</h1>
-        <div class="meta" id="vidMeta"></div>
-        <div class="player-wrap" id="player"></div>
+      <main>
+        <div class="player-wrap" id="playerWrap">
+          <div class="player-inner" id="player"></div>
+        </div>
 
-        <div class="comments">
+        <div class="title-row">
+          <div>
+            <h1 id="vidTitle">Loading…</h1>
+            <div class="meta" id="vidMeta"></div>
+          </div>
+          <div style="text-align:right">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div>
+                <button id="likeBtn" class="btn">👍 <span id="likeCount">0</span></button>
+                <button id="dislikeBtn" class="btn">👎 <span id="dislikeCount">0</span></button>
+              </div>
+              <div class="stat" id="viewCount">0 views</div>
+            </div>
+
+            <div class="actions" style="justify-content:flex-end;margin-top:8px;">
+              <button id="downloadBtn" class="btn">Download</button>
+              <button id="shareBtn" class="btn">Share</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="comments" id="commentsSection">
           <h2>Comments</h2>
           <div id="commentsList"></div>
-          <textarea id="commentInput" rows="3" placeholder="Write a comment…"></textarea>
-          <button class="post" id="postComment">Post as <span id="postName"></span></button>
-        </div>
-      </div>
 
-      <aside class="recommendations">
+          <textarea id="commentInput" rows="3" placeholder="Write a comment…"></textarea>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="post" id="postComment">Post as <span id="postName"></span></button>
+            <div class="meta-small" id="commentsHint">Replies supported</div>
+          </div>
+        </div>
+      </main>
+
+      <aside class="recommendations" id="recAside">
         <h2>Recommended</h2>
         <div id="relatedList"></div>
+        <div id="recLoading" style="color:var(--muted); margin-top:8px;">Showing up to 50 results</div>
       </aside>
     </div>
 
@@ -213,7 +215,19 @@
   </div>
 
   <script>
-    // 1. User name
+    // theme
+    (function(){
+      const body = document.body;
+      const saved = localStorage.getItem('shiatu_theme') || 'dark';
+      body.setAttribute('data-theme', saved);
+      document.getElementById('themeToggle').onclick = () => {
+        const next = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        localStorage.setItem('shiatu_theme', next);
+      };
+    })();
+
+    // user
     let user = localStorage.getItem('shiatuUser');
     if (!user) {
       user = prompt("What's your name?") || 'Guest';
@@ -221,139 +235,238 @@
     }
     document.getElementById('postName').textContent = user;
 
-    // 2. Helpers
+    // helpers
     function extractId(url) {
-      const m = url.match(/[?&]v=([^&]+)/)
-             || url.match(/youtu\.be\/([^?&]+)/)
-             || url.match(/\/embed\/([^?&]+)/);
+      if(!url) return '';
+      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/\/embed\/([^?&]+)/) || url.match(/\/v\/([^?&/]+)/);
       return m ? m[1] : '';
     }
-    function saveComments(key, arr) {
-      localStorage.setItem(key, JSON.stringify(arr));
-    }
-    function loadComments(key) {
-      return JSON.parse(localStorage.getItem(key) || '[]');
-    }
+    function safeParse(v, def){ try{return JSON.parse(v);}catch{return def;} }
 
-    // 3. Get video ID
+    // storage helpers - persistent objects keyed by site prefix
+    const DB_PREFIX = 'shiatu_v1_';
+    function dbKey(name){ return DB_PREFIX + name; }
+    function dbGet(name, def){ return safeParse(localStorage.getItem(dbKey(name)), def); }
+    function dbSet(name, val){ localStorage.setItem(dbKey(name), JSON.stringify(val)); }
+
+    // get video id
     const vidId = new URLSearchParams(location.search).get('id');
-    const storageKey = `comments_${vidId}`;
 
-    // 4. Fetch all tracks
-    fetch("https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1")
+    // fetch sheet and render
+    const SHEET_URL = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
+
+    fetch(SHEET_URL)
       .then(r => r.json())
       .then(rows => {
+        // map tracks
         const tracks = rows.map(r => ({
-          title:    r["Title"]    || 'Untitled',
-          type:     (r["Type"]||'youtube').toLowerCase(),
-          url:      r["URL"]      || '',
-          id:       extractId(r["URL"]),
+          title: r["Title"] || 'Untitled',
+          type: (r["Type"]||'youtube').toLowerCase(),
+          url: r["URL"] || '',
+          id: extractId(r["URL"]),
           playlist: r["Playlist"] || 'Uncategorized'
-        }));
+        })).filter(t => t.id); // only entries with id
 
-        // 5. Current track
+        // find current
         const current = tracks.find(t => t.id === vidId);
-        if (!current) throw new Error('Video not found');
+        if(!current) throw new Error('Video not found');
 
+        // Title & meta
         document.getElementById('vidTitle').textContent = current.title;
         document.getElementById('vidMeta').textContent = `Playlist: ${current.playlist}`;
 
-        // 6. Render main player
+        // Views: increment on page load (persisted)
+        const views = dbGet('views', {});
+        views[current.id] = (views[current.id] || 0) + 1;
+        dbSet('views', views);
+        document.getElementById('viewCount').textContent = `${views[current.id]} views`;
+
+        // Likes/dislikes persisted per video
+        const likes = dbGet('likes', {});
+        const dislikes = dbGet('dislikes', {});
+        document.getElementById('likeCount').textContent = likes[current.id] || 0;
+        document.getElementById('dislikeCount').textContent = dislikes[current.id] || 0;
+
+        document.getElementById('likeBtn').onclick = () => {
+          likes[current.id] = (likes[current.id] || 0) + 1;
+          dbSet('likes', likes);
+          document.getElementById('likeCount').textContent = likes[current.id];
+        };
+        document.getElementById('dislikeBtn').onclick = () => {
+          dislikes[current.id] = (dislikes[current.id] || 0) + 1;
+          dbSet('dislikes', dislikes);
+          document.getElementById('dislikeCount').textContent = dislikes[current.id];
+        };
+
+        // Render main player (large)
         const player = document.getElementById('player');
-        if (current.type === 'mp3') {
-          const a = document.createElement('audio');
-          a.controls = true; a.src = current.url;
+        if(current.type === 'mp3'){
+          const a = document.createElement('audio'); a.controls = true; a.src = current.url;
           player.appendChild(a);
         } else {
           const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1`;
+          iframe.src = `https://www.youtube.com/embed/${current.id}?rel=0&modestbranding=1`;
           iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
           iframe.setAttribute('allowfullscreen', '');
           player.appendChild(iframe);
         }
 
-        // 7. Render comments (nested)
+        // Download button behavior: open YouTube watch page in new tab (user can use other tools)
+        document.getElementById('downloadBtn').onclick = () => {
+          const watchUrl = `https://www.youtube.com/watch?v=${current.id}`;
+          window.open(watchUrl, '_blank');
+        };
+
+        // Share button: navigator.share if available, else copy URL
+        document.getElementById('shareBtn').onclick = async () => {
+          const pageUrl = location.href;
+          const shareData = { title: current.title, text: current.title, url: pageUrl };
+          if(navigator.share){
+            try { await navigator.share(shareData); } catch(e){ console.warn(e); }
+          } else {
+            try {
+              await navigator.clipboard.writeText(pageUrl);
+              alert('Link copied to clipboard');
+            } catch {
+              const inp = document.createElement('input');
+              document.body.appendChild(inp);
+              inp.value = pageUrl; inp.select();
+              document.execCommand('copy');
+              inp.remove();
+              alert('Link copied to clipboard');
+            }
+          }
+        };
+
+        // Comments persisted permanently in localStorage per video
+        let comments = dbGet('comments_' + current.id, []);
         const listDiv = document.getElementById('commentsList');
-        let comments = loadComments(storageKey);
 
-        function renderComments(parentId, container) {
+        function renderComments(parentId, container){
           comments.filter(c => c.parentId === parentId)
-                  .forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'comment';
-            const header = document.createElement('div');
-            header.className = 'header';
-            header.innerHTML = `<span>${c.user}</span><span>${new Date(c.time).toLocaleString()}</span>`;
-            const text = document.createElement('div');
-            text.className = 'text';
-            text.textContent = c.text;
-            const btn = document.createElement('button');
-            btn.textContent = 'Reply';
-            btn.onclick = () => showReplyForm(c.id, div);
-            div.append(header, text, btn);
+            .sort((a,b) => a.time - b.time)
+            .forEach(c => {
+              const div = document.createElement('div');
+              div.className = 'comment';
+              const header = document.createElement('div');
+              header.className = 'header';
+              header.innerHTML = `<span>${escapeHtml(c.user)}</span><span class="meta-small">${new Date(c.time).toLocaleString()}</span>`;
+              const text = document.createElement('div');
+              text.className = 'text';
+              text.textContent = c.text;
+              const controls = document.createElement('div');
+              controls.style.display = 'flex'; controls.style.gap = '8px';
+              const replyBtn = document.createElement('button');
+              replyBtn.className = 'btn'; replyBtn.textContent = 'Reply';
+              replyBtn.onclick = () => showReplyForm(c.id, div);
+              const delBtn = document.createElement('button');
+              delBtn.className = 'btn'; delBtn.textContent = 'Delete';
+              delBtn.onclick = () => {
+                if(!confirm('Delete this comment?')) return;
+                comments = comments.filter(x => x.id !== c.id && x.parentId !== c.id);
+                dbSet('comments_' + current.id, comments);
+                refreshComments();
+              };
+              controls.append(replyBtn, delBtn);
+              div.append(header, text, controls);
 
-            const replies = document.createElement('div');
-            replies.className = 'replies';
-            renderComments(c.id, replies);
-            div.appendChild(replies);
+              const replies = document.createElement('div'); replies.className = 'replies';
+              renderComments(c.id, replies);
+              div.appendChild(replies);
+              container.appendChild(div);
+            });
+        }
 
-            container.appendChild(div);
-          });
+        function refreshComments(){
+          listDiv.innerHTML = '';
+          renderComments(null, listDiv);
         }
 
         function showReplyForm(parentId, container) {
           if (container.querySelector('textarea')) return;
-          const ta = document.createElement('textarea');
-          ta.rows = 2; ta.placeholder = 'Write a reply…';
-          const btn = document.createElement('button');
-          btn.className = 'post';
-          btn.textContent = 'Post Reply';
+          const ta = document.createElement('textarea'); ta.rows = 2; ta.placeholder = 'Write a reply…';
+          const btn = document.createElement('button'); btn.className = 'post'; btn.textContent = 'Post Reply';
           btn.onclick = () => {
             const text = ta.value.trim(); if (!text) return;
             comments.push({ id: Date.now(), parentId, user, text, time: Date.now() });
-            saveComments(storageKey, comments);
-            listDiv.innerHTML = '';
-            renderComments(null, listDiv);
+            dbSet('comments_' + current.id, comments);
+            refreshComments();
           };
           container.append(ta, btn);
         }
 
-        renderComments(null, listDiv);
+        // initial render
+        refreshComments();
 
-        // 8. New top‐level comment
+        // top-level post
         document.getElementById('postComment').onclick = () => {
           const ta = document.getElementById('commentInput');
           const txt = ta.value.trim(); if (!txt) return;
           comments.push({ id: Date.now(), parentId: null, user, text: txt, time: Date.now() });
-          saveComments(storageKey, comments);
+          dbSet('comments_' + current.id, comments);
           ta.value = '';
-          listDiv.innerHTML = '';
-          renderComments(null, listDiv);
+          refreshComments();
         };
 
-        // 9. Related recommendations
+        // Recommendations: show up to 50 other videos (not just same playlist)
         const relatedDiv = document.getElementById('relatedList');
-        tracks.filter(t => t.playlist === current.playlist && t.id !== vidId)
-              .forEach(t => {
-          const card = document.createElement('div');
-          card.className = 'rec-card';
-          const wrap = document.createElement('div');
-          wrap.className = 'rec-player';
-          const ifr = document.createElement('iframe');
-          ifr.src = `https://www.youtube.com/embed/${t.id}?rel=0`;
-          wrap.appendChild(ifr);
-          const a = document.createElement('a');
-          a.className = 'rec-title';
-          a.href = `video.html?id=${t.id}`;
-          a.textContent = t.title;
-          card.append(wrap, a);
+        const recs = tracks.filter(t => t.id !== current.id).slice(0,50);
+        recs.forEach(t => {
+          const card = document.createElement('div'); card.className = 'rec-card';
+          const thumb = document.createElement('div'); thumb.className = 'rec-thumb';
+          const thumbIframe = document.createElement('iframe');
+          thumbIframe.src = `https://www.youtube.com/embed/${t.id}?rel=0`;
+          thumb.appendChild(thumbIframe);
+          const overlay = document.createElement('a');
+          overlay.className = 'thumb-overlay';
+          overlay.href = `video.html?id=${t.id}`;
+          overlay.title = t.title;
+          overlay.onclick = (e) => {
+            // navigate to video page (default)
+            // no playback here
+            // allow normal navigation
+          };
+          thumb.appendChild(overlay);
+
+          const info = document.createElement('div'); info.className = 'rec-info';
+          const a = document.createElement('a'); a.className = 'rec-title'; a.href = `video.html?id=${t.id}`; a.textContent = t.title;
+          const meta = document.createElement('div'); meta.className = 'rec-meta';
+          const vcounts = dbGet('views', {}); meta.textContent = `${vcounts[t.id] || 0} views · ${t.playlist}`;
+          info.append(a, meta);
+
+          card.append(thumb, info);
           relatedDiv.appendChild(card);
         });
+
+        // infinite scroll-style: nothing needed; recommendations scroll automatically in aside.
+
       })
       .catch(err => {
         document.querySelector('.site').innerHTML = `<p style="color:#ff4e4e;">❌ ${err.message}</p>`;
         console.error(err);
       });
+
+    // escape helper
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+    }
+
+    // Utility: update related view-count display periodically (in case views change)
+    setInterval(() => {
+      const vcounts = dbGet('views', {});
+      const viewEl = document.getElementById('viewCount');
+      if(viewEl && typeof vidId !== 'undefined') viewEl.textContent = `${vcounts[vidId] || 0} views`;
+      // Also update rec meta if present
+      document.querySelectorAll('.rec-card').forEach((card) => {
+        const a = card.querySelector('.rec-title');
+        if(!a) return;
+        const href = a.getAttribute('href');
+        const id = new URLSearchParams(href.split('?')[1]).get('id');
+        const m = card.querySelector('.rec-meta');
+        if(m) m.textContent = `${vcounts[id] || 0} views`;
+      });
+    }, 3000);
+
   </script>
 </body>
 </html>
