@@ -11,120 +11,212 @@
       --muted: #9aa4b2;
       --accent: #ff4e4e;
       --radius: 8px;
-      --text: #e6eef6;
     }
-    [data-theme="light"]{
-      --bg: #f7f8fb;
-      --card: #ffffff;
-      --muted: #55606a;
-      --accent: #ff4e4e;
-      --text: #0b1220;
-    }
-    *{box-sizing:border-box}
+    * { box-sizing: border-box; }
     body {
-      margin:0; padding:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: #e6eef6;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     }
-    .site { max-width:1100px; margin:auto; padding:1rem; }
-    header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-    .logo{ font-weight:700; color:var(--accent); }
-    nav a{ color:var(--text); text-decoration:none; margin-left:12px; }
-    .content { display:grid; grid-template-columns:1fr 340px; gap:16px; }
-    @media(max-width:900px){ .content{ grid-template-columns:1fr } }
-
-    .loading { color:var(--muted); padding:18px; text-align:center; }
-
-    .player-wrap{ border-radius:var(--radius); overflow:hidden; background:#000; }
-    .player-inner{ width:100%; height:56.25vw; max-height:64vh; background:#000; display:flex; align-items:center; justify-content:center; }
-    @media(min-width:900px){ .player-inner{ height:560px } }
-    .player-inner iframe, .player-inner audio{ width:100%; height:100%; border:0; display:block; }
-
-    .title-row{ display:flex; justify-content:space-between; gap:12px; margin:12px 0; }
-    h1{ margin:0; font-size:1.3rem; }
-    .meta{ color:var(--muted); margin-top:6px; font-size:0.95rem; }
-
-    .actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    .btn{ background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06); padding:8px 10px; border-radius:8px; cursor:pointer; }
-    .btn.primary{ background:var(--accent); color:#fff; border:none; }
-
-    .comments{ background:var(--card); border-radius:var(--radius); padding:1rem; margin-top:1rem; }
-    .comments h2{ margin-top:0; }
-    .comment{ margin-bottom:0.9rem; }
-    .comment .header{ display:flex; justify-content:space-between; color:var(--accent); font-size:0.85rem; }
-    .comment .text{ margin:6px 0; white-space:pre-wrap; color:var(--text); }
-    .replies{ margin-left:1rem; border-left:2px solid rgba(255,255,255,0.02); padding-left:0.75rem; }
-
-    textarea{ width:100%; padding:0.6rem; border-radius:8px; border:none; background:var(--card); color:var(--text); margin-bottom:8px; resize:vertical; }
-    button.post{ background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
-
-    .recommendations{ background:var(--card); border-radius:var(--radius); padding:1rem; max-height:80vh; overflow:auto; }
-    .rec-card{ display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
-    .rec-thumb{ width:160px; height:90px; background:#000; border-radius:6px; overflow:hidden; position:relative; flex:0 0 160px; }
-    .rec-thumb iframe{ width:100%; height:100%; border:0; pointer-events:none; opacity:0.95; }
-    .thumb-overlay{ position:absolute; inset:0; z-index:3; background:transparent; display:block; }
-    .rec-info{ flex:1; }
-    .rec-title{ color:var(--text); text-decoration:none; display:block; margin:0 0 6px; font-size:0.95rem; }
-    .rec-meta{ color:var(--muted); font-size:0.85rem; }
-
-    footer{ text-align:center; margin-top:1.5rem; color:var(--muted); font-size:0.85rem; }
+    .site {
+      max-width: 1000px;
+      margin: auto;
+      padding: 1rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    nav a {
+      color: #e6eef6;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 1rem;
+    }
+    @media (max-width: 800px) {
+      .content { grid-template-columns: 1fr; }
+    }
+    /* main player */
+    .player-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .player-wrap iframe,
+    .player-wrap audio {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem;
+    }
+    .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    /* comments */
+    .comments {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .comments h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #f5fafe;
+    }
+    .comment {
+      margin-bottom: 1rem;
+    }
+    .comment .header {
+      font-size: 0.85rem;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .comment .text {
+      margin: 0.25rem 0 0.5rem;
+      font-size: 0.9rem;
+    }
+    .comment button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .replies {
+      margin-left: 1rem;
+      border-left: 2px solid #1a202e;
+      padding-left: 0.75rem;
+    }
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      border: none;
+      background: #0b1220;
+      color: #e6eef6;
+      resize: vertical;
+      margin-bottom: 0.5rem;
+    }
+    button.post {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    /* recommendations */
+    .recommendations {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+    .recommendations h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #f5fafe;
+    }
+    .rec-card {
+      margin-bottom: 1rem;
+    }
+    .rec-player {
+      width: 100%;
+      height: 120px;
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .rec-player iframe {
+      width: 100%; height: 100%; border: 0;
+    }
+    .rec-title {
+      margin: 0.5rem 0 0;
+      font-size: 0.9rem;
+      color: #e6eef6;
+      text-decoration: none;
+      display: block;
+    }
+    .rec-title:hover {
+      color: var(--accent);
+    }
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 2rem 0 1rem;
+    }
   </style>
 </head>
-<body data-theme="dark">
+<body>
   <div class="site">
     <header>
       <div class="logo">Shiatube</div>
       <nav>
         <a href="index.html">Home</a>
         <a href="upload.html">Upload</a>
-        <button id="themeToggle" class="btn" title="Toggle theme">Theme</button>
       </nav>
     </header>
+  
+
 
     <div class="content">
-      <main>
-        <div id="loadingArea" class="loading">Loading…</div>
+      <div>
+        <h1 id="vidTitle">Loading…</h1>
+        
+        <div class="meta" id="vidMeta"></div>
+        <div class="player-wrap" id="player"></div>
+        <div class="actions">
+  <button id="likeBtn">👍 <span id="likeCount">0</span></button>
+  <button id="dislikeBtn">👎 <span id="dislikeCount">0</span></button>
+  <div id="viewCount" class="stat">0 views</div>
+</div>
+<button id="downloadBtn">YouTube</button>
+<button id="shareBtn">Share</button>
 
-        <div class="player-wrap" id="playerWrap" style="display:none;">
-          <div class="player-inner" id="player"></div>
-        </div>
 
-        <div class="title-row" id="titleRow" style="display:none;">
-          <div>
-            <h1 id="vidTitle">Loading…</h1>
-            <div class="meta" id="vidMeta"></div>
-          </div>
-          <div style="text-align:right">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div>
-                <button id="likeBtn" class="btn">👍 <span id="likeCount">0</span></button>
-                <button id="dislikeBtn" class="btn">👎 <span id="dislikeCount">0</span></button>
-              </div>
-              <div id="viewCount" style="color:var(--muted); margin-left:8px;">0 views</div>
-            </div>
-            <div class="actions" style="justify-content:flex-end;margin-top:8px;">
-              <button id="downloadBtn" class="btn">Download</button>
-              <button id="shareBtn" class="btn">Share</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="comments" id="commentsSection" style="display:none;">
+        <div class="comments">
           <h2>Comments</h2>
           <div id="commentsList"></div>
           <textarea id="commentInput" rows="3" placeholder="Write a comment…"></textarea>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="post" id="postComment">Post as <span id="postName"></span></button>
-            <div style="color:var(--muted); font-size:0.9rem;">Replies supported · Persisted locally</div>
-          </div>
+          <button class="post" id="postComment">Post as <span id="postName"></span></button>
         </div>
-      </main>
+      </div>
 
-      <aside class="recommendations" id="recAside">
+      <aside class="recommendations">
         <h2>Recommended</h2>
         <div id="relatedList"></div>
-        <div id="recLoading" style="color:var(--muted); margin-top:8px;">Showing up to 50 results</div>
       </aside>
     </div>
 
@@ -132,216 +224,203 @@
   </div>
 
   <script>
-    // Theme toggle & persistence
-    (function(){
-      const body = document.body;
-      const saved = localStorage.getItem('shiatu_theme') || 'dark';
-      body.setAttribute('data-theme', saved);
-      document.getElementById('themeToggle').onclick = () => {
-        const next = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', next);
-        localStorage.setItem('shiatu_theme', next);
-      };
-    })();
+    const likes = JSON.parse(localStorage.getItem('likes') || '{}');
+const dislikes = JSON.parse(localStorage.getItem('dislikes') || '{}');
+const views = JSON.parse(localStorage.getItem('views') || '{}');
 
-    // Ensure DOM elements exist before using
-    const loadingArea = document.getElementById('loadingArea');
-    const playerWrap = document.getElementById('playerWrap');
-    const playerEl = document.getElementById('player');
-    const titleRow = document.getElementById('titleRow');
-    const commentsSection = document.getElementById('commentsSection');
-    const relatedList = document.getElementById('relatedList');
-
-    // user
+    // 1. User name
     let user = localStorage.getItem('shiatuUser');
-    if(!user){
+    if (!user) {
       user = prompt("What's your name?") || 'Guest';
       localStorage.setItem('shiatuUser', user);
     }
-    const postNameSpan = document.getElementById('postName');
-    if(postNameSpan) postNameSpan.textContent = user;
+    document.getElementById('postName').textContent = user;
 
-    // helpers
-    function extractId(url){
-      if(!url) return '';
-      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/\/embed\/([^?&]+)/) || url.match(/\/v\/([^?&/]+)/);
+    // 2. Helpers
+    function extractId(url) {
+      const m = url.match(/[?&]v=([^&]+)/)
+             || url.match(/youtu\.be\/([^?&]+)/)
+             || url.match(/\/embed\/([^?&]+)/);
       return m ? m[1] : '';
     }
-    function safeParse(v, def){ try{ return JSON.parse(v); } catch{ return def; } }
-    const DB_PREFIX = 'shiatu_v1_';
-    function dbKey(name){ return DB_PREFIX + name; }
-    function dbGet(name, def){ return safeParse(localStorage.getItem(dbKey(name)), def); }
-    function dbSet(name, val){ localStorage.setItem(dbKey(name), JSON.stringify(val)); }
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
-
-    const vidId = new URLSearchParams(location.search).get('id');
-    if(!vidId){
-      loadingArea.textContent = '❌ No video id provided in the URL';
-      throw new Error('Missing id parameter');
+    function saveComments(key, arr) {
+      localStorage.setItem(key, JSON.stringify(arr));
+    }
+    function loadComments(key) {
+      return JSON.parse(localStorage.getItem(key) || '[]');
     }
 
-    const SHEET_URL = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
 
-    // Safe fetch + render with defensive checks
-    fetch(SHEET_URL).then(r => {
-      if(!r.ok) throw new Error('Network response was not ok');
-      return r.json();
-    }).then(rows => {
-      const rawRows = Array.isArray(rows) ? rows : [];
-      const tracks = rawRows.map(r => ({
-        title: r && r["Title"] ? r["Title"] : 'Untitled',
-        type: r && r["Type"] ? (r["Type"]||'youtube').toLowerCase() : 'youtube',
-        url: r && r["URL"] ? r["URL"] : '',
-        id: extractId(r && r["URL"] ? r["URL"] : ''),
-        playlist: r && r["Playlist"] ? r["Playlist"] : 'Uncategorized'
-      })).filter(t => t.id);
+    // 3. Get video ID
+    const vidId = new URLSearchParams(location.search).get('id');
+    const storageKey = `comments_${vidId}`;
 
-      if(tracks.length === 0) throw new Error('No valid tracks found');
+    // 4. Fetch all tracks
+    fetch("https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1")
+      .then(r => r.json())
+      .then(rows => {
+        const tracks = rows.map(r => ({
+          title:    r["Title"]    || 'Untitled',
+          type:     (r["Type"]||'youtube').toLowerCase(),
+          url:      r["URL"]      || '',
+          id:       extractId(r["URL"]),
+          playlist: r["Playlist"] || 'Uncategorized'
+        }));
 
-      const current = tracks.find(t => t.id === vidId);
-      if(!current) throw new Error('Video not found');
+        // 5. Current track
+        const current = tracks.find(t => t.id === vidId);
+        if (!current) throw new Error('Video not found');
 
-      // set title & meta
-      const titleEl = document.getElementById('vidTitle');
-      if(titleEl) titleEl.textContent = current.title;
-      const metaEl = document.getElementById('vidMeta');
-      if(metaEl) metaEl.textContent = `Playlist: ${current.playlist}`;
+        document.getElementById('vidTitle').textContent = current.title;
+        document.getElementById('vidMeta').textContent = `Playlist: ${current.playlist}`;
+        const likes = JSON.parse(localStorage.getItem('likes') || '{}');
+const dislikes = JSON.parse(localStorage.getItem('dislikes') || '{}');
+const views = JSON.parse(localStorage.getItem('views') || '{}');
+        views[current.id] = (views[current.id] || 0) + 1;
+localStorage.setItem('views', JSON.stringify(views));
+document.getElementById('viewCount').textContent = `${views[current.id]} views`;
 
-      // views increment
-      const views = dbGet('views', {});
-      views[current.id] = (views[current.id] || 0) + 1;
-      dbSet('views', views);
-      const viewCountEl = document.getElementById('viewCount');
-      if(viewCountEl) viewCountEl.textContent = `${views[current.id]} views`;
+document.getElementById('likeBtn').onclick = () => {
+  likes[current.id] = (likes[current.id] || 0) + 1;
+  localStorage.setItem('likes', JSON.stringify(likes));
+  document.getElementById('likeCount').textContent = likes[current.id];
+};
 
-      // likes/dislikes
-      const likes = dbGet('likes', {}), dislikes = dbGet('dislikes', {});
-      const likeCountEl = document.getElementById('likeCount'), dislikeCountEl = document.getElementById('dislikeCount');
-      if(likeCountEl) likeCountEl.textContent = likes[current.id] || 0;
-      if(dislikeCountEl) dislikeCountEl.textContent = dislikes[current.id] || 0;
-      const likeBtn = document.getElementById('likeBtn'), dislikeBtn = document.getElementById('dislikeBtn');
-      if(likeBtn) likeBtn.onclick = () => { likes[current.id] = (likes[current.id]||0)+1; dbSet('likes', likes); if(likeCountEl) likeCountEl.textContent = likes[current.id]; };
-      if(dislikeBtn) dislikeBtn.onclick = () => { dislikes[current.id] = (dislikes[current.id]||0)+1; dbSet('dislikes', dislikes); if(dislikeCountEl) dislikeCountEl.textContent = dislikes[current.id]; };
+document.getElementById('dislikeBtn').onclick = () => {
+  dislikes[current.id] = (dislikes[current.id] || 0) + 1;
+  localStorage.setItem('dislikes', JSON.stringify(dislikes));
+  document.getElementById('dislikeCount').textContent = dislikes[current.id];
+};
 
-      // render player (defensive)
-      if(playerEl){
-        playerEl.innerHTML = '';
-        if(current.type === 'mp3'){
-          const a = document.createElement('audio'); a.controls = true; a.src = current.url; playerEl.appendChild(a);
+document.getElementById('downloadBtn').onclick = () => {
+  window.open(`https://www.youtube.com/watch?v=${current.id}`, '_blank');
+};
+
+document.getElementById('shareBtn').onclick = async () => {
+  const url = location.href;
+  if (navigator.share) {
+    await navigator.share({ title: current.title, url });
+  } else {
+    await navigator.clipboard.writeText(url);
+    alert('Link copied to clipboard');
+  }
+};
+
+
+        // 6. Render main player
+        const player = document.getElementById('player');
+        if (current.type === 'mp3') {
+          const a = document.createElement('audio');
+          a.controls = true; a.src = current.url;
+          player.appendChild(a);
         } else {
           const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(current.id)}?rel=0&modestbranding=1`;
-          iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-          iframe.setAttribute('allowfullscreen','');
-          playerEl.appendChild(iframe);
+          iframe.src = `https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1`;
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          iframe.setAttribute('allowfullscreen', '');
+          player.appendChild(iframe);
         }
-      }
 
-      // download: open YouTube watch
-      const downloadBtn = document.getElementById('downloadBtn');
-      if(downloadBtn) downloadBtn.onclick = () => window.open(`https://www.youtube.com/watch?v=${current.id}`, '_blank');
 
-      // share
-      const shareBtn = document.getElementById('shareBtn');
-      if(shareBtn) shareBtn.onclick = async () => {
-        const pageUrl = location.href;
-        const shareData = { title: current.title, text: current.title, url: pageUrl };
-        if(navigator.share){ try{ await navigator.share(shareData); }catch(e){ console.warn(e); } }
-        else {
-          try{ await navigator.clipboard.writeText(pageUrl); alert('Link copied to clipboard'); }
-          catch{ const inp = document.createElement('input'); document.body.appendChild(inp); inp.value = pageUrl; inp.select(); document.execCommand('copy'); inp.remove(); alert('Link copied to clipboard'); }
+
+
+
+        // 7. Render comments (nested)
+        const listDiv = document.getElementById('commentsList');
+        let comments = loadComments(storageKey);
+
+        function renderComments(parentId, container) {
+          comments.filter(c => c.parentId === parentId)
+                  .forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'comment';
+            const header = document.createElement('div');
+            header.className = 'header';
+            header.innerHTML = `<span>${c.user}</span><span>${new Date(c.time).toLocaleString()}</span>`;
+            const text = document.createElement('div');
+            text.className = 'text';
+            text.textContent = c.text;
+            const btn = document.createElement('button');
+            btn.textContent = 'Reply';
+            btn.onclick = () => showReplyForm(c.id, div);
+            div.append(header, text, btn);
+
+            const replies = document.createElement('div');
+            replies.className = 'replies';
+            renderComments(c.id, replies);
+            div.appendChild(replies);
+
+            container.appendChild(div);
+          });
         }
-      };
+        
+        function showReplyForm(parentId, container) {
+          if (container.querySelector('textarea')) return;
+          const ta = document.createElement('textarea');
+          ta.rows = 2; ta.placeholder = 'Write a reply…';
+          const btn = document.createElement('button');
+          btn.className = 'post';
+          btn.textContent = 'Post Reply';
+          btn.onclick = () => {
+            const text = ta.value.trim(); if (!text) return;
+            comments.push({ id: Date.now(), parentId, user, text, time: Date.now() });
+            saveComments(storageKey, comments);
+            listDiv.innerHTML = '';
+            renderComments(null, listDiv);
+          };
+          container.append(ta, btn);
+        }
 
-      // comments (persisted)
-      let comments = dbGet('comments_' + current.id, []);
-      const listDiv = document.getElementById('commentsList');
-      function renderComments(parentId, container){
-        (comments.filter(c => c.parentId === parentId).sort((a,b)=>a.time-b.time)).forEach(c => {
-          const div = document.createElement('div'); div.className = 'comment';
-          const header = document.createElement('div'); header.className = 'header';
-          header.innerHTML = `<span>${escapeHtml(c.user)}</span><span class="meta-small">${new Date(c.time).toLocaleString()}</span>`;
-          const text = document.createElement('div'); text.className = 'text'; text.textContent = c.text;
-          const controls = document.createElement('div'); controls.style.display='flex'; controls.style.gap='8px';
-          const replyBtn = document.createElement('button'); replyBtn.className='btn'; replyBtn.textContent='Reply';
-          replyBtn.onclick = () => showReplyForm(c.id, div);
-          const delBtn = document.createElement('button'); delBtn.className='btn'; delBtn.textContent='Delete';
-          delBtn.onclick = () => { if(!confirm('Delete this comment?')) return; comments = comments.filter(x=>x.id!==c.id && x.parentId!==c.id); dbSet('comments_' + current.id, comments); refreshComments(); };
-          controls.append(replyBtn, delBtn);
-          div.append(header, text, controls);
-          const replies = document.createElement('div'); replies.className='replies';
-          renderComments(c.id, replies);
-          div.appendChild(replies);
-          container.appendChild(div);
-        });
-      }
-      function refreshComments(){ if(listDiv){ listDiv.innerHTML=''; renderComments(null, listDiv); } }
-      function showReplyForm(parentId, container){
-        if(container.querySelector('textarea')) return;
-        const ta = document.createElement('textarea'); ta.rows=2; ta.placeholder='Write a reply…';
-        const btn = document.createElement('button'); btn.className='post'; btn.textContent='Post Reply';
-        btn.onclick = () => { const text = ta.value.trim(); if(!text) return; comments.push({ id:Date.now(), parentId, user, text, time:Date.now() }); dbSet('comments_' + current.id, comments); refreshComments(); };
-        container.append(ta, btn);
-      }
-      refreshComments();
-      const postCommentBtn = document.getElementById('postComment');
-      if(postCommentBtn){
-        postCommentBtn.onclick = () => {
-          const ta = document.getElementById('commentInput'); if(!ta) return;
-          const txt = ta.value.trim(); if(!txt) return;
-          comments.push({ id:Date.now(), parentId:null, user, text:txt, time:Date.now() });
-          dbSet('comments_' + current.id, comments);
-          ta.value=''; refreshComments();
+        renderComments(null, listDiv);
+
+
+
+
+
+        // 8. New top‐level comment
+        document.getElementById('postComment').onclick = () => {
+          const ta = document.getElementById('commentInput');
+          const txt = ta.value.trim(); if (!txt) return;
+          comments.push({ id: Date.now(), parentId: null, user, text: txt, time: Date.now() });
+          saveComments(storageKey, comments);
+          ta.value = '';
+          listDiv.innerHTML = '';
+          renderComments(null, listDiv);
         };
-      }
 
-      // recommendations up to 50 — defensive building
-      relatedList.innerHTML = '';
-      const recs = tracks.filter(t => t.id !== current.id).slice(0,50);
-      recs.forEach(t => {
-        try{
-          const card = document.createElement('div'); card.className='rec-card';
-          const thumb = document.createElement('div'); thumb.className='rec-thumb';
-          const thumbIframe = document.createElement('iframe'); thumbIframe.src = `https://www.youtube.com/embed/${encodeURIComponent(t.id)}?rel=0`; thumb.appendChild(thumbIframe);
-          const overlay = document.createElement('a'); overlay.className='thumb-overlay'; overlay.href = `video.html?id=${encodeURIComponent(t.id)}`; overlay.title = t.title;
-          thumb.appendChild(overlay);
-          const info = document.createElement('div'); info.className='rec-info';
-          const a = document.createElement('a'); a.className='rec-title'; a.href = `video.html?id=${encodeURIComponent(t.id)}`; a.textContent = t.title;
-          const vcounts = dbGet('views', {}); const meta = document.createElement('div'); meta.className='rec-meta'; meta.textContent = `${vcounts[t.id]||0} views · ${t.playlist}`;
-          info.append(a, meta);
-          card.append(thumb, info);
-          relatedList.appendChild(card);
-        }catch(e){
-          console.warn('skip rec item', e);
-        }
+
+
+
+        // 9. Related recommendations
+        const relatedDiv = document.getElementById('relatedList');
+        tracks.filter(t => t.id !== current.id).slice(0, 50)
+
+              .forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'rec-card';
+          const wrap = document.createElement('div');
+          wrap.className = 'rec-player';
+          const thumb = document.createElement('div');
+thumb.className = 'rec-player';
+thumb.style.backgroundImage = `url(https://img.youtube.com/vi/${t.id}/hqdefault.jpg)`;
+thumb.style.backgroundSize = 'cover';
+thumb.style.backgroundPosition = 'center';
+thumb.style.cursor = 'pointer';
+thumb.onclick = () => location.href = `video.html?id=${t.id}`;
+wrap.appendChild(thumb);
+
+          const a = document.createElement('a');
+          a.className = 'rec-title';
+          a.href = `video.html?id=${t.id}`;
+          a.textContent = t.title;
+          card.append(wrap, a);
+          relatedDiv.appendChild(card);
+        });
+      })
+      .catch(err => {
+        document.querySelector('.site').innerHTML = `<p style="color:#ff4e4e;">❌ ${err.message}</p>`;
+        console.error(err);
       });
-
-      // show UI and hide loader
-      loadingArea.style.display = 'none';
-      if(playerWrap) playerWrap.style.display = '';
-      if(titleRow) titleRow.style.display = '';
-      if(commentsSection) commentsSection.style.display = '';
-
-    }).catch(err => {
-      // keep loading visible but show clear message
-      if(loadingArea) loadingArea.textContent = '❌ ' + (err && err.message ? err.message : String(err));
-      console.error(err);
-    });
-
-    // periodically update view counts in rec items and main view
-    setInterval(()=> {
-      const vcounts = dbGet('views', {});
-      const viewEl = document.getElementById('viewCount');
-      if(viewEl && vidId) viewEl.textContent = `${vcounts[vidId]||0} views`;
-      document.querySelectorAll('.rec-card').forEach(card => {
-        const a = card.querySelector('.rec-title'); if(!a) return;
-        try{
-          const href = a.getAttribute('href'); const id = new URLSearchParams(href.split('?')[1]).get('id');
-          const m = card.querySelector('.rec-meta'); if(m && id) m.textContent = `${vcounts[id]||0} views · ${m.textContent.split('·')[1] ? m.textContent.split('·')[1].trim() : ''}`;
-        }catch(e){}
-      });
-    },3000);
-
   </script>
 </body>
 </html>
