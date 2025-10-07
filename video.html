@@ -65,90 +65,47 @@
     }
     .player-inner {
       width:100%;
-      height:56.25vw; /* 16:9 responsive */
+      height:56.25vw; /* responsive 16:9 */
       max-height: 64vh;
       background:#000;
     }
     @media(min-width:900px){ .player-inner { height:56.25%; } }
     .player-inner iframe, .player-inner audio { width:100%; height:100%; border:0; display:block; }
 
-    .title-row {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      margin:12px 0;
-    }
+    .title-row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin:12px 0; }
     h1 { font-size:1.3rem; margin:0; color:var(--text); }
-    .meta { color:var(--muted); font-size:0. nine rem; margin-top:6px; }
+    .meta { color:var(--muted); font-size:0.95rem; margin-top:6px; }
 
-    /* actions */
     .actions { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
-    .btn {
-      background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06);
-      padding:8px 10px; border-radius:8px; cursor:pointer; font-size:0.95rem;
-    }
+    .btn { background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06); padding:8px 10px; border-radius:8px; cursor:pointer; font-size:0.95rem; }
     .btn.primary { background:var(--accent); color:#fff; border:none; }
     .stat { color:var(--muted); font-size:0.95rem; margin-left:8px; }
 
     /* comments */
-    .comments {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding:1rem;
-      margin-top:1rem;
-    }
+    .comments { background: var(--card); border-radius: var(--radius); padding:1rem; margin-top:1rem; }
     .comments h2 { margin-top:0; font-size:1.05rem; color:var(--text); }
     .comment { margin-bottom:0.9rem; }
     .comment .header { display:flex; justify-content:space-between; gap:8px; color:var(--accent); font-size:0.85rem; }
-    .comment .text { margin:6px 0 8px; color:var(--text); }
+    .comment .text { margin:6px 0 8px; color:var(--text); white-space:pre-wrap; }
     .comment .meta-small { color:var(--muted); font-size:0.82rem; }
     .replies { margin-left:1rem; border-left:2px solid rgba(255,255,255,0.02); padding-left:0.75rem; margin-top:8px; }
 
-    textarea {
-      width:100%;
-      padding:0.6rem;
-      border-radius:8px;
-      border: none;
-      background: var(--card);
-      color:var(--text);
-      resize:vertical;
-      margin-bottom:8px;
-    }
+    textarea { width:100%; padding:0.6rem; border-radius:8px; border: none; background: var(--card); color:var(--text); resize:vertical; margin-bottom:8px; }
     button.post { background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
 
-    /* recommendations */
-    .recommendations {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding:1rem;
-      max-height: calc(80vh);
-      overflow-y: auto;
-    }
+    /* recommendations (scrollable list up to 50) */
+    .recommendations { background: var(--card); border-radius: var(--radius); padding:1rem; max-height: calc(80vh); overflow-y: auto; }
     .recommendations h2 { margin-top:0; color:var(--text); }
     .rec-card { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; cursor:pointer; }
-    .rec-thumb {
-      width: 160px;
-      height: 90px;
-      background:#000;
-      border-radius:6px;
-      overflow:hidden;
-      flex:0 0 160px;
-      position:relative;
-    }
+    .rec-thumb { width: 160px; height: 90px; background:#000; border-radius:6px; overflow:hidden; flex:0 0 160px; position:relative; }
     .rec-thumb iframe { width:100%; height:100%; border:0; display:block; pointer-events:none; opacity:0.95; }
     .rec-info { flex:1; }
     .rec-title { color:var(--text); text-decoration:none; font-size:0.95rem; margin:0 0 6px; display:block; }
     .rec-meta { color:var(--muted); font-size:0.85rem; }
+    .thumb-overlay { position:absolute; inset:0; z-index:3; background:transparent; display:block; }
 
-    /* clickable overlay for redirect on thumb */
-    .thumb-overlay { position:absolute; inset:0; z-index:3; background:transparent; }
-
-    /* responsive rec thumbnails */
-    @media(max-width:600px){
-      .rec-thumb { width: 46%; height:auto; padding-top:26%; flex:0 0 46%; }
-      .rec-card { flex-wrap:wrap; gap:8px; }
-    }
+    /* loading overlay */
+    .loading { color:var(--muted); padding:18px; text-align:center; }
 
     footer { text-align:center; margin-top:1.25rem; color:var(--muted); font-size:0.85rem; }
 
@@ -167,11 +124,13 @@
 
     <div class="content">
       <main>
-        <div class="player-wrap" id="playerWrap">
+        <div id="loadingArea" class="loading">Loading…</div>
+
+        <div class="player-wrap" id="playerWrap" style="display:none;">
           <div class="player-inner" id="player"></div>
         </div>
 
-        <div class="title-row">
+        <div class="title-row" id="titleRow" style="display:none;">
           <div>
             <h1 id="vidTitle">Loading…</h1>
             <div class="meta" id="vidMeta"></div>
@@ -192,7 +151,7 @@
           </div>
         </div>
 
-        <div class="comments" id="commentsSection">
+        <div class="comments" id="commentsSection" style="display:none;">
           <h2>Comments</h2>
           <div id="commentsList"></div>
 
@@ -242,8 +201,6 @@
       return m ? m[1] : '';
     }
     function safeParse(v, def){ try{return JSON.parse(v);}catch{return def;} }
-
-    // storage helpers - persistent objects keyed by site prefix
     const DB_PREFIX = 'shiatu_v1_';
     function dbKey(name){ return DB_PREFIX + name; }
     function dbGet(name, def){ return safeParse(localStorage.getItem(dbKey(name)), def); }
@@ -252,20 +209,31 @@
     // get video id
     const vidId = new URLSearchParams(location.search).get('id');
 
-    // fetch sheet and render
+    // sheet url
     const SHEET_URL = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
 
+    // keep loading visible until everything is ready
+    const loadingArea = document.getElementById('loadingArea');
+    const playerWrap = document.getElementById('playerWrap');
+    const titleRow = document.getElementById('titleRow');
+    const commentsSection = document.getElementById('commentsSection');
+
     fetch(SHEET_URL)
-      .then(r => r.json())
+      .then(r => {
+        if(!r.ok) throw new Error('Network response was not ok');
+        return r.json();
+      })
       .then(rows => {
-        // map tracks
-        const tracks = rows.map(r => ({
-          title: r["Title"] || 'Untitled',
-          type: (r["Type"]||'youtube').toLowerCase(),
-          url: r["URL"] || '',
-          id: extractId(r["URL"]),
-          playlist: r["Playlist"] || 'Uncategorized'
+        // map tracks safely
+        const tracks = (Array.isArray(rows) ? rows : []).map(r => ({
+          title: r && r["Title"] ? r["Title"] : 'Untitled',
+          type: r && r["Type"] ? (r["Type"]||'youtube').toLowerCase() : 'youtube',
+          url: r && r["URL"] ? r["URL"] : '',
+          id: extractId(r && r["URL"] ? r["URL"] : ''),
+          playlist: r && r["Playlist"] ? r["Playlist"] : 'Uncategorized'
         })).filter(t => t.id); // only entries with id
+
+        if(tracks.length === 0) throw new Error('No valid tracks found');
 
         // find current
         const current = tracks.find(t => t.id === vidId);
@@ -300,6 +268,7 @@
 
         // Render main player (large)
         const player = document.getElementById('player');
+        player.innerHTML = '';
         if(current.type === 'mp3'){
           const a = document.createElement('audio'); a.controls = true; a.src = current.url;
           player.appendChild(a);
@@ -408,8 +377,9 @@
           refreshComments();
         };
 
-        // Recommendations: show up to 50 other videos (not just same playlist)
+        // Recommendations: show up to 50 other videos (not just same playlist), scrollable
         const relatedDiv = document.getElementById('relatedList');
+        relatedDiv.innerHTML = '';
         const recs = tracks.filter(t => t.id !== current.id).slice(0,50);
         recs.forEach(t => {
           const card = document.createElement('div'); card.className = 'rec-card';
@@ -421,28 +391,30 @@
           overlay.className = 'thumb-overlay';
           overlay.href = `video.html?id=${t.id}`;
           overlay.title = t.title;
-          overlay.onclick = (e) => {
-            // navigate to video page (default)
-            // no playback here
-            // allow normal navigation
-          };
+          // allow normal navigation; no playback on click
           thumb.appendChild(overlay);
 
           const info = document.createElement('div'); info.className = 'rec-info';
           const a = document.createElement('a'); a.className = 'rec-title'; a.href = `video.html?id=${t.id}`; a.textContent = t.title;
           const meta = document.createElement('div'); meta.className = 'rec-meta';
-          const vcounts = dbGet('views', {}); meta.textContent = `${vcounts[t.id] || 0} views · ${t.playlist}`;
+          const vcounts = dbGet('views', {});
+          meta.textContent = `${vcounts[t.id] || 0} views · ${t.playlist}`;
           info.append(a, meta);
 
           card.append(thumb, info);
           relatedDiv.appendChild(card);
         });
 
-        // infinite scroll-style: nothing needed; recommendations scroll automatically in aside.
+        // show player and hide loader
+        loadingArea.style.display = 'none';
+        playerWrap.style.display = '';
+        titleRow.style.display = '';
+        commentsSection.style.display = '';
 
       })
       .catch(err => {
-        document.querySelector('.site').innerHTML = `<p style="color:#ff4e4e;">❌ ${err.message}</p>`;
+        // keep loading visible but replace text with the error
+        loadingArea.textContent = '❌ ' + (err && err.message ? err.message : String(err));
         console.error(err);
       });
 
@@ -451,19 +423,20 @@
       return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
     }
 
-    // Utility: update related view-count display periodically (in case views change)
+    // Utility: update related view-count display periodically
     setInterval(() => {
       const vcounts = dbGet('views', {});
       const viewEl = document.getElementById('viewCount');
-      if(viewEl && typeof vidId !== 'undefined') viewEl.textContent = `${vcounts[vidId] || 0} views`;
-      // Also update rec meta if present
+      if(viewEl && vidId) viewEl.textContent = `${vcounts[vidId] || 0} views`;
       document.querySelectorAll('.rec-card').forEach((card) => {
         const a = card.querySelector('.rec-title');
         if(!a) return;
-        const href = a.getAttribute('href');
-        const id = new URLSearchParams(href.split('?')[1]).get('id');
-        const m = card.querySelector('.rec-meta');
-        if(m) m.textContent = `${vcounts[id] || 0} views`;
+        try {
+          const href = a.getAttribute('href');
+          const id = new URLSearchParams(href.split('?')[1]).get('id');
+          const m = card.querySelector('.rec-meta');
+          if(m && id) m.textContent = `${vcounts[id] || 0} views · ${m.textContent.split('·')[1] ? m.textContent.split('·')[1].trim() : ''}`;
+        } catch(e){ /* ignore malformed hrefs */ }
       });
     }, 3000);
 
