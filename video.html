@@ -324,87 +324,123 @@ document.getElementById('shareBtn').onclick = async () => {
 
 
 
-
-        // 7. Load and render comments from Google Sheet
+// 7. Load and render comments from Google Sheet
 const listDiv = document.getElementById('commentsList');
 let comments = [];
 
+// Use your Apps Script URL below (keeps the one you provided for loading)
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFF1bWdWwCCwf_dtVu4hyUBZ2uogVTCKh-GVWjO2YL8e31yDHG3ruc7NyxtKBmFbVUXw/exec";
+
 function loadComments() {
-  fetch("https://script.google.com/macros/s/AKfycbxFF1bWdWwCCwf_dtVu4hyUBZ2uogVTCKh-GVWjO2YL8e31yDHG3ruc7NyxtKBmFbVUXw/exec") // Replace with your actual Apps Script URL
+  fetch(APPS_SCRIPT_URL)
     .then(r => r.json())
     .then(rows => {
+      // Map sheet rows to a consistent comment shape and include a stable id
       comments = rows
-        .filter(c => c["Video ID"] === current.id)
-        .map(c => ({
-          user: c["User"],
-          text: c["Text"],
-          parentId: c["Parent ID"] || null,
-          time: new Date(c["Timestamp"]).getTime()
-        }));
+        .map((c, index) => ({
+          id: String(c["Timestamp"] || "") + "-" + index, // stable per-row id
+          rawTimestamp: c["Timestamp"] || "",
+          videoId: c["Video ID"] || c["videoId"] || "",
+          user: c["User"] || c["user"] || "Anonymous",
+          text: c["Text"] || c["text"] || "",
+          parentId: (c["Parent ID"] || c["parentId"] || "") || null,
+          time: c["Timestamp"] ? new Date(c["Timestamp"]).getTime() : Date.now()
+        }))
+        .filter(c => c.videoId === current.id); // only comments for current video
+
       listDiv.innerHTML = '';
       renderComments(null, listDiv);
+    })
+    .catch(err => {
+      console.error('Failed to load comments', err);
+      listDiv.innerHTML = '<div style="color:#ff4e4e">Failed to load comments</div>';
     });
 }
 
 function renderComments(parentId, container) {
-  comments.filter(c => c.parentId === parentId)
-          .forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'comment';
-    const header = document.createElement('div');
-    header.className = 'header';
-    header.innerHTML = `<span>${c.user}</span><span>${new Date(c.time).toLocaleString()}</span>`;
-    const text = document.createElement('div');
-    text.className = 'text';
-    text.textContent = c.text;
-    const btn = document.createElement('button');
-    btn.textContent = 'Reply';
-    btn.onclick = () => showReplyForm(c.parentId || '', div);
-    div.append(header, text, btn);
+  comments
+    .filter(c => c.parentId === parentId)
+    .sort((a, b) => a.time - b.time)
+    .forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'comment';
 
-    const replies = document.createElement('div');
-    replies.className = 'replies';
-    renderComments(c.time.toString(), replies); // use timestamp as unique ID
-    div.appendChild(replies);
+      const header = document.createElement('div');
+      header.className = 'header';
+      header.innerHTML = `<span>${escapeHtml(c.user)}</span><span>${new Date(c.time).toLocaleString()}</span>`;
 
-    container.appendChild(div);
-  });
+      const text = document.createElement('div');
+      text.className = 'text';
+      text.textContent = c.text;
+
+      const replyBtn = document.createElement('button');
+      replyBtn.textContent = 'Reply';
+      replyBtn.onclick = () => showReplyForm(c.id, div);
+
+      div.append(header, text, replyBtn);
+
+      const replies = document.createElement('div');
+      replies.className = 'replies';
+      renderComments(c.id, replies);
+      div.appendChild(replies);
+
+      container.appendChild(div);
+    });
 }
 
 function showReplyForm(parentId, container) {
   if (container.querySelector('textarea')) return;
   const ta = document.createElement('textarea');
   ta.rows = 2; ta.placeholder = 'Write a reply…';
+
   const btn = document.createElement('button');
   btn.className = 'post';
   btn.textContent = 'Post Reply';
+
   btn.onclick = () => {
     const text = ta.value.trim(); if (!text) return;
-    fetch("YOUR_WEB_APP_URL", {
+
+    // POST to Apps Script to save reply to the Sheet
+    fetch(APPS_SCRIPT_URL, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
         videoId: current.id,
         user,
         text,
-        parentId
+        parentId: parentId // parentId is the id we use (timestamp-index)
       })
-    }).then(() => {
-      loadComments();
+    })
+    .then(res => res.text())
+    .then(() => {
+      loadComments(); // refresh from sheet so everyone sees it
+    })
+    .catch(err => {
+      console.error('Failed to post reply', err);
+      alert('Failed to post reply');
     });
   };
+
   container.append(ta, btn);
 }
 
+// initial load
 loadComments();
 
-
-
-        document.getElementById('postComment').onclick = () => {
+// 8. New top-level comment
+document.getElementById('postComment').onclick = () => {
   const ta = document.getElementById('commentInput');
   const txt = ta.value.trim(); if (!txt) return;
 
-  fetch("YOUR_WEB_APP_URL", {
+  // Debug log
+  console.log("Posting comment:", {
+    videoId: current.id,
+    user,
+    text: txt,
+    parentId: ''
+  });
+
+  fetch("https://script.google.com/macros/s/AKfycbxFF1bWdWwCCwf_dtVu4hyUBZ2uogVTCKh-GVWjO2YL8e31yDHG3ruc7NyxtKBmFbVUXw/exec", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
@@ -413,14 +449,18 @@ loadComments();
       text: txt,
       parentId: ''
     })
-  }).then(() => {
+  })
+  .then(res => res.text())
+  .then(msg => {
+    console.log("Server response:", msg);
     ta.value = '';
     loadComments(); // refresh after posting
+  })
+  .catch(err => {
+    console.error("POST failed:", err);
+    alert("Failed to post comment");
   });
 };
-
-
-
 
 
         // 9. Related recommendations
