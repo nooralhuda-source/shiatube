@@ -325,68 +325,100 @@ document.getElementById('shareBtn').onclick = async () => {
 
 
 
-        // 7. Render comments (nested)
-        const listDiv = document.getElementById('commentsList');
-        let comments = loadComments(storageKey);
+        // 7. Load and render comments from Google Sheet
+const listDiv = document.getElementById('commentsList');
+let comments = [];
 
-        function renderComments(parentId, container) {
-          comments.filter(c => c.parentId === parentId)
-                  .forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'comment';
-            const header = document.createElement('div');
-            header.className = 'header';
-            header.innerHTML = `<span>${c.user}</span><span>${new Date(c.time).toLocaleString()}</span>`;
-            const text = document.createElement('div');
-            text.className = 'text';
-            text.textContent = c.text;
-            const btn = document.createElement('button');
-            btn.textContent = 'Reply';
-            btn.onclick = () => showReplyForm(c.id, div);
-            div.append(header, text, btn);
+function loadComments() {
+  fetch("https://script.google.com/macros/s/AKfycbxFF1bWdWwCCwf_dtVu4hyUBZ2uogVTCKh-GVWjO2YL8e31yDHG3ruc7NyxtKBmFbVUXw/exec") // Replace with your actual Apps Script URL
+    .then(r => r.json())
+    .then(rows => {
+      comments = rows
+        .filter(c => c["Video ID"] === current.id)
+        .map(c => ({
+          user: c["User"],
+          text: c["Text"],
+          parentId: c["Parent ID"] || null,
+          time: new Date(c["Timestamp"]).getTime()
+        }));
+      listDiv.innerHTML = '';
+      renderComments(null, listDiv);
+    });
+}
 
-            const replies = document.createElement('div');
-            replies.className = 'replies';
-            renderComments(c.id, replies);
-            div.appendChild(replies);
+function renderComments(parentId, container) {
+  comments.filter(c => c.parentId === parentId)
+          .forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'comment';
+    const header = document.createElement('div');
+    header.className = 'header';
+    header.innerHTML = `<span>${c.user}</span><span>${new Date(c.time).toLocaleString()}</span>`;
+    const text = document.createElement('div');
+    text.className = 'text';
+    text.textContent = c.text;
+    const btn = document.createElement('button');
+    btn.textContent = 'Reply';
+    btn.onclick = () => showReplyForm(c.parentId || '', div);
+    div.append(header, text, btn);
 
-            container.appendChild(div);
-          });
-        }
-        
-        function showReplyForm(parentId, container) {
-          if (container.querySelector('textarea')) return;
-          const ta = document.createElement('textarea');
-          ta.rows = 2; ta.placeholder = 'Write a reply…';
-          const btn = document.createElement('button');
-          btn.className = 'post';
-          btn.textContent = 'Post Reply';
-          btn.onclick = () => {
-            const text = ta.value.trim(); if (!text) return;
-            comments.push({ id: Date.now(), parentId, user, text, time: Date.now() });
-            saveComments(storageKey, comments);
-            listDiv.innerHTML = '';
-            renderComments(null, listDiv);
-          };
-          container.append(ta, btn);
-        }
+    const replies = document.createElement('div');
+    replies.className = 'replies';
+    renderComments(c.time.toString(), replies); // use timestamp as unique ID
+    div.appendChild(replies);
 
-        renderComments(null, listDiv);
+    container.appendChild(div);
+  });
+}
+
+function showReplyForm(parentId, container) {
+  if (container.querySelector('textarea')) return;
+  const ta = document.createElement('textarea');
+  ta.rows = 2; ta.placeholder = 'Write a reply…';
+  const btn = document.createElement('button');
+  btn.className = 'post';
+  btn.textContent = 'Post Reply';
+  btn.onclick = () => {
+    const text = ta.value.trim(); if (!text) return;
+    fetch("YOUR_WEB_APP_URL", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        videoId: current.id,
+        user,
+        text,
+        parentId
+      })
+    }).then(() => {
+      loadComments();
+    });
+  };
+  container.append(ta, btn);
+}
+
+loadComments();
 
 
 
-
-
-        // 8. New top‐level comment
         document.getElementById('postComment').onclick = () => {
-          const ta = document.getElementById('commentInput');
-          const txt = ta.value.trim(); if (!txt) return;
-          comments.push({ id: Date.now(), parentId: null, user, text: txt, time: Date.now() });
-          saveComments(storageKey, comments);
-          ta.value = '';
-          listDiv.innerHTML = '';
-          renderComments(null, listDiv);
-        };
+  const ta = document.getElementById('commentInput');
+  const txt = ta.value.trim(); if (!txt) return;
+
+  fetch("YOUR_WEB_APP_URL", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      videoId: current.id,
+      user,
+      text: txt,
+      parentId: ''
+    })
+  }).then(() => {
+    ta.value = '';
+    loadComments(); // refresh after posting
+  });
+};
+
 
 
 
