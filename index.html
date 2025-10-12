@@ -31,199 +31,41 @@
       display: flex;
       flex-direction: column;
     }
-
-    /* SITE CONTAINER */
-    .site {
-      flex: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* HEADER - sticky like apps */
+    .site { flex: 1; max-width: 1200px; margin: 0 auto; padding: 16px; }
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-      position: sticky;
-      top: 0;
-      z-index: 60;
-      background: linear-gradient(180deg, rgba(0,0,0,0.25), transparent);
-      padding: 10px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-bottom: 14px; position: sticky; top: 0; z-index: 60;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), transparent); padding: 10px 0;
     }
-
-    .left {
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .logo {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--accent);
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .logo .brand {
-      background:linear-gradient(135deg,#1e293b,#0b1220);
-      width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-      font-weight:700;color:var(--accent);
-      box-shadow:0 6px 18px rgba(2,6,23,0.4);
-    }
-
-    nav {
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    nav a, .header-btn {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.95rem;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding:8px 10px;
-      border-radius:8px;
-    }
-
+    .left { display:flex; align-items:center; gap:12px; }
+    .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); display:flex; align-items:center; gap:8px; }
+    .logo .brand { background:linear-gradient(135deg,#1e293b,#0b1220); width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center; font-weight:700;color:var(--accent); box-shadow:0 6px 18px rgba(2,6,23,0.4); }
+    nav { display:flex; align-items:center; gap:12px; }
+    nav a, .header-btn { color: var(--text); text-decoration: none; font-size: 0.95rem; background: transparent; border: none; cursor: pointer; padding:8px 10px; border-radius:8px; }
     nav a:hover, .header-btn:hover { background: rgba(255,255,255,0.03); color: var(--accent); }
-
-    /* small back button */
-    .back-btn {
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-weight:600;
-    }
-
-    /* hamburger for mobile */
-    .hamburger {
-      display: none;
-      width:40px;height:40px;border-radius:8px;border:none;background:transparent;color:var(--text);
-      font-size:22px;cursor:pointer;
-    }
-
-    /* theme toggle */
-    .theme-toggle {
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 8px;
-      border-radius:8px;
-      border:none;
-      cursor:pointer;
-      background: rgba(255,255,255,0.02);
-    }
-
-    /* PLAYLIST SELECT */
-    .controls {
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
-    }
-
-    #playlistFilter {
-      width: 100%;
-      max-width: 320px;
-      padding: 8px;
-      font-size: 0.95rem;
-      border-radius: var(--radius);
-      border: none;
-      background: var(--card);
-      color: var(--text);
-    }
-
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(300px,1fr));
-      gap: 16px;
-    }
-
-    /* responsive layout like Youtube app on phones */
-    @media (max-width: 980px) {
-      .grid { grid-template-columns: repeat(2, minmax(220px,1fr)); }
-      .site { padding: 12px; }
-      header { padding: 8px 0; }
-    }
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; gap: 12px; }
-      .hamburger { display:block; }
-      nav.desktop-only { display:none; }
-    }
-
-    /* CARD */
-    .track {
-      background: var(--card);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      min-height: 260px;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
-    }
-
-    /* video preview area */
-    .player {
-      position: relative;
-      width:100%;
-      padding-top: 56.25%; /* 16:9 */
-      background: #000;
-    }
-    .player iframe, .player audio {
-      position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block;
-    }
-
-    /* overlay anchor so entire card is clickable without nesting issues */
-    .card-link {
-      position:absolute; inset:0; z-index:20; text-decoration:none; color:inherit;
-    }
-
-    .meta {
-      padding: 12px;
-      z-index: 10;
-    }
-    .title {
-      margin: 0 0 8px;
-      font-size: 1rem;
-      line-height: 1.2;
-      color: var(--text);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
+    .hamburger { display: none; width:40px;height:40px;border-radius:8px;border:none;background:transparent;color:var(--text); font-size:22px;cursor:pointer; }
+    .theme-toggle { display:inline-flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; border:none; cursor:pointer; background: rgba(255,255,255,0.02); }
+    .controls { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+    #playlistFilter { width: 100%; max-width: 320px; padding: 8px; font-size: 0.95rem; border-radius: var(--radius); border: none; background: var(--card); color: var(--text); }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(300px,1fr)); gap: 16px; }
+    @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, minmax(220px,1fr)); } .site { padding: 12px; } header { padding: 8px 0; } }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; gap: 12px; } .hamburger { display:block; } nav.desktop-only { display:none; } }
+    .track { background: var(--card); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; position: relative; min-height: 260px; box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
+    .player { position: relative; width:100%; padding-top: 56.25%; background: #000; }
+    .player iframe, .player audio, .player img { position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block; object-fit:cover; }
+    .card-link { position:absolute; inset:0; z-index:20; text-decoration:none; color:inherit; }
+    .meta { padding: 12px; z-index: 10; }
+    .title { margin: 0 0 8px; font-size: 1rem; line-height: 1.2; color: var(--text); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .small { font-size: 0.8rem; color: var(--muted); }
-
-    /* text overlay at top-right to show listen count or badge */
-    .badge {
-      position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); padding:6px 8px;border-radius:8px; font-size:0.85rem;
-    }
-
+    .badge { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); padding:6px 8px;border-radius:8px; font-size:0.85rem; }
     footer { text-align: center; padding: 12px 0; font-size: 0.8rem; color: var(--muted); }
-
-    /* mobile slide-out menu */
-    .mobile-menu {
-      position: fixed; top:0; left: -260px; width: 260px; height: 100%; background: var(--card);
-      box-shadow: 6px 0 20px rgba(0,0,0,0.5); transition: left .22s ease; padding: 16px; z-index:120;
-    }
+    .mobile-menu { position: fixed; top:0; left: -260px; width: 260px; height: 100%; background: var(--card); box-shadow: 6px 0 20px rgba(0,0,0,0.5); transition: left .22s ease; padding: 16px; z-index:120; }
     .mobile-menu.open { left: 0; }
     .mobile-menu a { display:block; padding:10px 8px; color:var(--text); text-decoration:none; border-radius:6px; }
     .mobile-menu a:hover { background: rgba(255,255,255,0.03); color: var(--accent); }
-
   </style>
 </head>
 <body data-theme="dark">
-  <!-- Mobile menu -->
   <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
     <a href="index.html">Home</a>
     <a href="upload.html">Upload</a>
@@ -257,218 +99,173 @@
       <select id="playlistFilter">
         <option value="">All Playlists</option>
       </select>
+
+      <label style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:0.95rem;">
+        <input id="shortsToggle" type="checkbox" style="transform:scale(1.1);margin-right:6px;">
+        <span style="user-select:none;">Show Shorts</span>
+      </label>
     </div>
 
-    <div id="audioContainer" class="grid">
-      Loading…
-    </div>
+    <div class="slot-header"><div class="slot-title">Shorts</div></div>
+    <div id="shortsGrid" class="grid"><div style="color:var(--muted)">Loading Shorts…</div></div>
+
+    <div id="audioContainer" class="grid">Loading…</div>
   </div>
 
   <footer>© Noor Al Huda</footer>
 
   <script>
-    // preserve theme across visits
+    // theme
     const body = document.body;
-    const savedTheme = localStorage.getItem('shiatu_theme') || 'dark';
-    body.setAttribute('data-theme', savedTheme);
-
-    function toggleTheme() {
-      const current = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', current);
-      localStorage.setItem('shiatu_theme', current);
-    }
-
+    body.setAttribute('data-theme', localStorage.getItem('shiatu_theme') || 'dark');
+    function toggleTheme(){ const cur = body.getAttribute('data-theme')==='dark'?'light':'dark'; body.setAttribute('data-theme',cur); localStorage.setItem('shiatu_theme',cur); }
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('mobileTheme').addEventListener('click', toggleTheme);
 
-    // mobile menu toggle
-    const hamb = document.getElementById('hamb');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamb.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-      mobileMenu.setAttribute('aria-hidden', !mobileMenu.classList.contains('open'));
-    });
+    // mobile menu
+    const hamb = document.getElementById('hamb'), mobileMenu = document.getElementById('mobileMenu');
+    hamb.addEventListener('click', ()=>{ mobileMenu.classList.toggle('open'); mobileMenu.setAttribute('aria-hidden',!mobileMenu.classList.contains('open')); });
+    document.addEventListener('click',(e)=>{ if(!mobileMenu.contains(e.target) && !hamb.contains(e.target)){ mobileMenu.classList.remove('open'); mobileMenu.setAttribute('aria-hidden','true'); }});
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ mobileMenu.classList.remove('open'); mobileMenu.setAttribute('aria-hidden','true'); }});
 
-    // Back to Noor Al Huda link (user requested)
-    // set to an example anchor; replace href value with the real destination URL if needed
-    const backNoor = document.getElementById('backNoor');
-    backNoor.href = 'https://nooralhuda.co.uk';
-    document.getElementById('backToNoor').href = backNoor.href;
+    // back link
+    const backNoor = document.getElementById('backNoor'); backNoor.href = 'https://nooralhuda.co.uk'; document.getElementById('backToNoor').href = backNoor.href;
 
     // ask for user name once
-    let userName = localStorage.getItem('shiatuUser');
-    if (!userName) {
-      userName = prompt("Welcome to Shiatube! What's your name?") || 'Guest';
-      localStorage.setItem('shiatuUser', userName);
-    }
+    let userName = localStorage.getItem('shiatuUser'); if(!userName){ userName = prompt("Welcome to Shiatube! What's your name?") || 'Guest'; localStorage.setItem('shiatuUser', userName); }
 
-    const SHEET_URL = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
+    // constants
+    const SHEET_LONG = "https://opensheet.elk.sh/1kURT57icsGH7FSFe6pyoUzDiu-p7_Izx8pW657DfsBo/Form+Responses+1";
+    const SHEET_SHORTS = "https://opensheet.elk.sh/1_gUqsSzu-L9RSIYjZ2cITCSLGu6j8cFV3aSlr9GQDEM/Form+Responses+1";
     const STORAGE_KEY = "listenCounts";
 
-    function getListenCounts() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-      catch { return {}; }
-    }
-    function saveListenCounts(counts) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(counts));
-    }
+    function getListenCounts(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }catch{return {};}}
+    function saveListenCounts(c){ localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); }
+    function recordListen(track){ const c=getListenCounts(); c[track.url]=(c[track.url]||0)+1; saveListenCounts(c); }
 
-    // record a play
-    function recordListen(track) {
-      const counts = getListenCounts();
-      counts[track.url] = (counts[track.url] || 0) + 1;
-      saveListenCounts(counts);
-    }
+    function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
 
-    // shuffle
-    function shuffle(arr) {
-      const a = arr.slice();
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+    // extract id (supports standard, youtu.be, embed, /v/, and /shorts/)
+    function extractId(url){ if(!url) return ''; const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&/]+)/) || url.match(/\/embed\/([^?&/]+)/) || url.match(/\/v\/([^?&/]+)/) || url.match(/\/shorts\/([^?&/]+)/); return m ? m[1] : ''; }
+
+    // create main track card
+    function createTrackCard(track){
+      const card=document.createElement('div'); card.className='track';
+      const playerWrap=document.createElement('div'); playerWrap.className='player';
+      if((track.type||'').toLowerCase()==='mp3'){ const audio=document.createElement('audio'); audio.controls=true; audio.src=track.url; playerWrap.appendChild(audio); }
+      else {
+        const id=extractId(track.url);
+        if(id){ const iframe=document.createElement('iframe'); iframe.src=`https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`; iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'); iframe.setAttribute('allowfullscreen',''); playerWrap.appendChild(iframe); }
+        else { const p=document.createElement('div'); p.className='small'; p.textContent='Invalid YouTube link'; playerWrap.appendChild(p); }
       }
-      return a;
-    }
-
-    // robust id extraction
-    function extractId(url) {
-      if (!url) return '';
-      const m = url.match(/[?&]v=([^&]+)/)
-             || url.match(/youtu\.be\/([^?&]+)/)
-             || url.match(/\/embed\/([^?&]+)/)
-             || url.match(/\/v\/([^?&/]+)/);
-      return m ? m[1] : '';
-    }
-
-    // create card: note overlay link covers the whole card so clicking anywhere navigates
-    function createTrackCard(track) {
-      const card = document.createElement('div');
-      card.className = 'track';
-
-      const playerWrap = document.createElement('div');
-      playerWrap.className = 'player';
-
-      if (track.type === 'mp3') {
-        const audio = document.createElement('audio');
-        audio.controls = true; audio.src = track.url;
-        playerWrap.appendChild(audio);
-      } else {
-        const id = extractId(track.url);
-        if (id) {
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
-          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-          iframe.setAttribute('allowfullscreen', '');
-          playerWrap.appendChild(iframe);
-        } else {
-          const p = document.createElement('div');
-          p.className = 'small'; p.textContent = 'Invalid YouTube link';
-          playerWrap.appendChild(p);
-        }
-      }
-
-      // meta
-      const meta = document.createElement('div'); meta.className = 'meta';
-      const title = document.createElement('h3'); title.className='title'; title.textContent = track.title;
-      const small = document.createElement('div'); small.className = 'small'; small.textContent = track.type.toUpperCase();
+      const meta=document.createElement('div'); meta.className='meta';
+      const title=document.createElement('h3'); title.className='title'; title.textContent = track.title || 'Untitled';
+      const small=document.createElement('div'); small.className='small'; small.textContent = (track.type||'youtube').toUpperCase();
       meta.appendChild(title); meta.appendChild(small);
+      const badge=document.createElement('div'); badge.className='badge'; const counts=getListenCounts(); badge.textContent = `${counts[track.url]||0} plays`;
 
-      // badge showing listen count
-      const badge = document.createElement('div'); badge.className='badge';
-      const counts = getListenCounts();
-      badge.textContent = `${counts[track.url] || 0} plays`;
-
-      // overlay link
-      const link = document.createElement('a');
-      link.className = 'card-link';
+      // Decide target page: if track.type denotes shorts OR URL contains /shorts/ use shorts.html, else video.html
       const idFor = extractId(track.url);
-      link.href = `video.html?id=${encodeURIComponent(idFor)}`;
+      const isShort = ((track.type||'').toLowerCase()==='shorts') || /\/shorts\//i.test(track.url || '');
+      const target = isShort ? 'shorts.html' : 'video.html';
+      const link = document.createElement('a'); link.className='card-link';
+      if (idFor) {
+        link.href = `${target}?id=${encodeURIComponent(idFor)}${isShort && track.url && !/\/shorts\//i.test(track.url) ? `&url=${encodeURIComponent(track.url)}` : ''}`;
+      } else {
+        // fallback: send raw URL as query param
+        link.href = `${target}?url=${encodeURIComponent(track.url || '')}`;
+      }
 
-      // wrap up
-      card.appendChild(playerWrap);
-      card.appendChild(meta);
-      card.appendChild(badge);
-      card.appendChild(link);
-
-      // record listen when user clicks the card area (only for homepage stats)
-      card.addEventListener('click', (e) => {
-        // don't double-count when user clicks the overlay link causing navigation
-        // this will run before navigation — it's fine to record once
-        recordListen(track);
-      }, { passive: true });
-
+      card.appendChild(playerWrap); card.appendChild(meta); card.appendChild(badge); card.appendChild(link);
+      card.addEventListener('click',()=>{ recordListen(track); }, { passive:true });
       return card;
     }
 
-    // renderTracks with playlist filter
-    function renderTracks(list, filter = '') {
-      const container = document.getElementById('audioContainer');
-      container.innerHTML = '';
-      list
-        .filter(t => !filter || t.playlist === filter)
-        .forEach(track => {
-          const card = createTrackCard(track);
-          container.appendChild(card);
-        });
+    function renderTracks(list, filter=''){
+      const container=document.getElementById('audioContainer'); container.innerHTML='';
+      list.filter(t=>!filter||t.playlist===filter).forEach(track=>container.appendChild(createTrackCard(track)));
     }
 
-    // fetch data and initialize
-    fetch(SHEET_URL)
-      .then(r => r.json())
-      .then(rows => {
-        const tracks = rows.map(r => ({
-          title:    r["Title"]    || "Untitled",
-          type:     (r["Type"]||"youtube").toLowerCase(),
-          url:      r["URL"]      || "",
-          playlist: r["Playlist"] || "Uncategorized"
+    // load long-form (main grid + playlists)
+    (async function loadLong(){
+      try{
+        const res=await fetch(SHEET_LONG);
+        const rows=await res.json();
+        const tracks=rows.map(r=>({
+          title: r["Title"]||r.title||"Untitled",
+          type: (r["Type"]||r.type||"youtube").toLowerCase(),
+          url: r["URL"]||r.url||"",
+          playlist: r["Playlist"]||r.playlist||"Uncategorized",
+          Thumb: r["Thumb"]||r.thumb||""
         }));
-
-        // build playlist dropdown
-        const sel = document.getElementById('playlistFilter');
-        Array.from(new Set(tracks.map(t => t.playlist)))
-          .forEach(pl => {
-            const opt = document.createElement('option');
-            opt.value = pl;
-            opt.textContent = pl;
-            sel.appendChild(opt);
-          });
-        sel.addEventListener('change', () => {
-          const counts = getListenCounts();
-          const initial = Object.keys(counts).length
-            ? tracks.sort((a,b)=>(counts[b.url]||0)-(counts[a.url]||0))
-            : shuffle(tracks);
-          renderTracks(initial, sel.value);
-        });
-
-        // initial order: most-played or random
-        const counts = getListenCounts();
-        const initial = Object.keys(counts).length
-          ? tracks.sort((a,b)=>(counts[b.url]||0)-(counts[a.url]||0))
-          : shuffle(tracks);
-
+        const sel=document.getElementById('playlistFilter');
+        sel.querySelectorAll('option:not(:first-child)').forEach(o=>o.remove());
+        Array.from(new Set(tracks.map(t=>t.playlist))).forEach(pl=>{ const opt=document.createElement('option'); opt.value=pl; opt.textContent=pl; sel.appendChild(opt); });
+        sel.addEventListener('change', ()=>{ const counts=getListenCounts(); const initial=Object.keys(counts).length ? tracks.sort((a,b)=> (counts[b.url]||0)-(counts[a.url]||0)) : shuffle(tracks); renderTracks(initial, sel.value); });
+        const counts=getListenCounts();
+        const initial=Object.keys(counts).length ? tracks.sort((a,b)=> (counts[b.url]||0)-(counts[a.url]||0)) : shuffle(tracks);
         renderTracks(initial);
+      }catch(err){ document.getElementById("audioContainer").textContent="❌ Failed to load playlist."; console.error(err); }
+    })();
 
-      })
-      .catch(err => {
-        document.getElementById("audioContainer").textContent = "❌ Failed to load playlist.";
-        console.error(err);
-      });
+    // Shorts loader using OpenSheet source (filtered by Type === 'shorts' OR Title contains #shorts OR URL contains /shorts/)
+    (function(){
+      const shortsGrid = document.getElementById('shortsGrid');
+      const shortsToggle = document.getElementById('shortsToggle');
 
-    // close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!mobileMenu.contains(e.target) && !hamb.contains(e.target)) {
-        mobileMenu.classList.remove('open');
-        mobileMenu.setAttribute('aria-hidden','true');
+      function buildThumbnail(url, thumbField){
+        const id = extractId(url);
+        if(thumbField) return thumbField;
+        return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : '';
       }
-    });
 
-    // keyboard escape closes mobile menu
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        mobileMenu.classList.remove('open');
-        mobileMenu.setAttribute('aria-hidden','true');
+      function buildShortCard(track){
+        const id = extractId(track.URL||track.url||track.url);
+        const card=document.createElement('div'); card.className='track';
+        const thumb = buildThumbnail(track.URL||track.url, track.Thumb||track.thumb);
+        // link goes to shorts.html
+        const linkHref = id ? `shorts.html?id=${encodeURIComponent(id)}${track.URL && !/\/shorts\//i.test(track.URL) ? `&url=${encodeURIComponent(track.URL)}` : ''}` : `shorts.html?url=${encodeURIComponent(track.URL||'')}`;
+        card.innerHTML = `<a class="card-link" href="${linkHref}" data-id="${id}"></a>
+          <div class="player"><img src="${thumb}" alt="${(track.Title||track.title||'Untitled').replace(/"/g,'')}" /></div>
+          <div class="meta"><div class="title">${track.Title||track.title||'Untitled'}</div><div class="small">YouTube • <span class="views-text">0</span> views</div></div>`;
+        const link = card.querySelector('.card-link');
+        const viewsNode = card.querySelector('.views-text');
+        link.addEventListener('click', e=>{ /* allow default navigation */ }, { passive:true });
+        return card;
       }
-    });
+
+      async function loadShorts(){
+        shortsGrid.innerHTML = `<div style="color:var(--muted)">Loading Shorts…</div>`;
+        try{
+          const res = await fetch(SHEET_SHORTS);
+          const rows = await res.json();
+          const shorts = rows.filter(r=>{
+            const ty = (r.Type||r.type||'').toLowerCase();
+            const title = (r.Title||r.title||'').toLowerCase();
+            const url = (r.URL||r.url||'').toString();
+            return ty==='shorts' || /#shorts/i.test(title) || /\/shorts\//i.test(url);
+          }).map(r=>({
+            Title: r.Title||r.title||'Untitled',
+            URL: r.URL||r.url||'',
+            Thumb: r.Thumb||r.thumb||'',
+            id: extractId(r.URL||r.url||''),
+            _rand: Math.random()
+          }));
+          if(shorts.length===0){ shortsGrid.innerHTML = `<div style="color:var(--muted)">No Shorts found</div>`; return; }
+          shorts.sort((a,b)=>(b.views||0)-(a.views||0) || a._rand - b._rand);
+          shortsGrid.innerHTML=''; shorts.forEach(s => shortsGrid.appendChild(buildShortCard(s)));
+        }catch(err){
+          shortsGrid.innerHTML = `<div style="color:var(--muted)">Failed to load Shorts</div>`;
+          console.error(err);
+        }
+      }
+
+      // default on
+      shortsToggle.checked = true;
+      shortsGrid.style.display = shortsToggle.checked ? 'grid' : 'none';
+      if(shortsToggle.checked) loadShorts();
+      shortsToggle.addEventListener('change', ()=>{ shortsGrid.style.display = shortsToggle.checked ? 'grid' : 'none'; if(shortsToggle.checked) loadShorts(); });
+    })();
   </script>
 </body>
 </html>
